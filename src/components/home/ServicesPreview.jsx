@@ -1,0 +1,139 @@
+function ServicesPreview() {
+
+const services = [
+
+{
+nombre:"Protocolo de la Navaja",
+precio:"₡5000",
+duracion:"30 min"
+},
+
+{
+nombre:"Protocolo del Duque",
+precio:"₡7000",
+duracion:"30 min"
+},
+
+{
+nombre:"Gran Consulado",
+precio:"₡10000",
+duracion:"1 hora"
+}
+
+]
+
+
+return(
+
+<section className="bg-[#111111] py-24">
+
+
+<div className="max-w-7xl mx-auto px-5">
+
+
+<h2 className="text-center text-4xl font-bold text-white">
+
+Nuestros Servicios
+
+</h2>
+
+
+<p className="text-center text-gray-400 mt-4">
+
+Descubre algunos de nuestros protocolos más solicitados
+
+</p>
+
+
+
+<div className="grid md:grid-cols-3 gap-8 mt-16">
+
+
+{
+
+services.map((service,index)=>(
+
+
+<div
+
+key={index}
+
+className="bg-[#1E1E1E] rounded-xl p-8 text-center hover:scale-105 transition duration-300"
+
+
+>
+
+
+<h3 className="text-2xl text-white">
+
+
+{service.nombre}
+
+
+</h3>
+
+
+
+<p className="text-[#B8860B] text-xl mt-5">
+
+
+{service.precio}
+
+
+</p>
+
+
+<p className="text-gray-400 mt-2">
+
+
+{service.duracion}
+
+
+</p>
+
+
+
+</div>
+
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+
+<div className="flex justify-center mt-14">
+
+
+<button className="border border-[#B8860B] px-8 py-3 rounded-md text-white hover:bg-[#B8860B] transition">
+
+
+Ver todos los servicios
+
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+)
+
+}
+
+export default ServicesPreview
