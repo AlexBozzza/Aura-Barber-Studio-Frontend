@@ -1,60 +1,43 @@
-function AboutSection(){
+import { Link } from "react-router-dom";
 
+function AboutSection() {
 
-return(
+  return (
 
-<section className="bg-black py-28">
+    <section className="bg-black py-28">
 
+      <div className="max-w-4xl mx-auto px-5 text-center">
 
-<div className="max-w-4xl mx-auto px-5 text-center">
+        <h2 className="text-4xl font-bold text-white">
 
+          Sobre Aura Barber Studio
 
-<h2 className="text-4xl font-bold text-white">
+        </h2>
 
+        <p className="text-gray-400 mt-8 leading-8 max-w-2xl mx-auto">
 
-Sobre Aura Barber Studio
+          En Aura Barber Studio creemos que un corte de cabello va mucho más allá
+          de un simple servicio. Nos enfocamos en brindar una experiencia premium,
+          atención personalizada y productos de alta calidad para que cada visita
+          sea única y refleje tu estilo.
 
+        </p>
 
-</h2>
+        <Link
+          to="/services"
+          className="inline-block mt-10 bg-[#B8860B] hover:bg-[#DAA520] px-8 py-4 rounded-md text-white transition duration-300"
+        >
 
+          Ver nuestros servicios
 
+        </Link>
 
-<p className="text-gray-400 mt-8 leading-8">
+      </div>
 
+    </section>
 
-En Aura Barber Studio creemos que un corte de cabello es mucho más que un servicio.
-
-
-Nos enfocamos en ofrecer una experiencia premium, atención personalizada y productos de alta calidad para que cada visita sea única.
-
-
-
-</p>
-
-
-
-<button className="mt-10 bg-[#B8860B] hover:bg-[#DAA520] px-8 py-4 rounded-md text-white transition duration-300">
-
-
-Reservar ahora
-
-
-</button>
-
-
-
-</div>
-
-
-
-</section>
-
-
-
-)
-
+  );
 
 }
 
-
-export default AboutSection
+export default AboutSection;

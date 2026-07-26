@@ -1,19 +1,19 @@
+import MainLayout from "../layouts/MainLayout";
+
+import ServicesHero from "../components/services/ServicesHero";
+import ServicesIntro from "../components/services/ServicesIntro";
+import ServicesList from "../components/services/ServicesList";
+import ServicesCTA from "../components/services/ServicesCTA";
+
 function Services() {
-
   return (
-
-    <div className="bg-black min-h-screen flex justify-center items-center">
-
-      <h1 className="text-white text-5xl">
-
-        Servicios
-
-      </h1>
-
-    </div>
-
-  )
-
+    <MainLayout>
+      <ServicesHero />
+      <ServicesIntro />
+      <ServicesList />
+      <ServicesCTA />
+    </MainLayout>
+  );
 }
 
-export default Services
+export default Services;

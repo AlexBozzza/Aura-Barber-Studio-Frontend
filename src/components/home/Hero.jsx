@@ -1,60 +1,40 @@
-import heroImage from '../../assets/hero.png'
+import { Link } from "react-router-dom";
+import heroImage from "../../assets/hero.png";
 
 function Hero() {
 
-return(
+  return (
 
-<section
+    <section
+      className="relative h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${heroImage})` }}
+    >
 
-className="relative h-screen bg-cover bg-center"
+      <div className="absolute inset-0 bg-black/70"></div>
 
-style={{backgroundImage:`url(${heroImage})`}}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full">
 
+        <h1 className="text-7xl font-bold text-white">
+          AuraBarberStudio
+        </h1>
 
->
+        <p className="mt-5 text-xl text-gray-300">
+          Experiencia premium en cada corte
+        </p>
 
-<div className="absolute inset-0 bg-black/70"/>
+        <Link
+          to="/services"
+          className="mt-10 bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-md text-white text-lg transition"
+        >
+          Reservar cita
+        </Link>
 
+      </div>
 
-<div className="relative z-10 flex flex-col items-center justify-center h-full">
+    </section>
 
-
-<h1 className="text-7xl font-bold text-white">
-
-AuraBarberStudio
-
-</h1>
-
-
-<p className="mt-5 text-xl text-gray-300">
-
-Experiencia premium en cada corte
-
-
-</p>
-
-
-
-<button className="mt-10 bg-yellow-600 hover:bg-yellow-500 px-8 py-4 rounded-md text-white text-lg">
-
-
-Reservar cita
-
-
-</button>
-
-
-
-</div>
-
-
-
-</section>
-
-
-
-)
+  );
 
 }
 
-export default Hero
+export default Hero;

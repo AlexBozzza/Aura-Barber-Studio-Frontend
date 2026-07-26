@@ -1,31 +1,43 @@
-function MapSection() {
+function MapSection(){
 
 return(
 
-<section className="bg-black py-24">
+<section className="bg-[#111111] py-16">
 
-<div className="max-w-6xl mx-auto px-6">
+<div className="max-w-7xl mx-auto">
 
 
-<h2 className="text-4xl font-bold text-white text-center">
+<h2 className="text-4xl font-bold text-white text-center mb-10">
 
-Ubicación
+¿Dónde encontrarnos?
 
 </h2>
 
 
-<div className="bg-[#1E1E1E] h-96 rounded-xl mt-12 flex justify-center items-center">
+
+<div className="overflow-hidden rounded-xl shadow-lg">
 
 
-<p className="text-gray-400">
+<iframe
 
-Mapa de Google próximamente
+src="https://maps.google.com/maps?q=Aura%20Barber%20Studio%20Alajuela&t=&z=15&ie=UTF8&iwloc=&output=embed"
 
+className="w-full h-[500px] border-0"
 
-</p>
+loading="lazy"
+
+allowFullScreen
+
+referrerPolicy="no-referrer-when-downgrade"
+
+>
+
+</iframe>
+
 
 
 </div>
+
 
 
 </div>
