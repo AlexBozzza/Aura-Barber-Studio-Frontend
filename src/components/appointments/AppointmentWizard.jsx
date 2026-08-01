@@ -1,25 +1,31 @@
+import { useState } from "react";
+
 import StepIndicator from "./StepIndicator";
-
 import ServiceSelector from "./ServiceSelector";
+import BarberSelector from "./BarberSelector";
 
-function AppointmentWizard(){
+function AppointmentWizard() {
+  const [step, setStep] = useState(1);
 
-return(
+  return (
+    <section className="bg-[#111111] py-20">
+      <div className="max-w-7xl mx-auto px-5">
+        <StepIndicator step={step} />
 
-<section className="bg-[#111111] py-20">
+        {step === 1 && (
+          <ServiceSelector
+            onNext={() => setStep(2)}
+          />
+        )}
 
-<div className="max-w-7xl mx-auto px-5">
-
-<StepIndicator/>
-
-<ServiceSelector/>
-
-</div>
-
-</section>
-
-)
-
+        {step === 2 && (
+          <BarberSelector
+            onNext={() => setStep(3)}
+          />
+        )}
+      </div>
+    </section>
+  );
 }
 
 export default AppointmentWizard;

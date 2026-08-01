@@ -6,7 +6,7 @@ import legado from "../../assets/images/services/legado-oro.jpg";
 import duque from "../../assets/images/services/protocolo-duque.jpg";
 import consulado from "../../assets/images/services/gran-consulado.jpg";
 
-function ServiceSelector() {
+function ServiceSelector({ onNext }) {
   const [selectedService, setSelectedService] = useState(null);
 
   const services = [
@@ -50,7 +50,6 @@ function ServiceSelector() {
 
   return (
     <section className="mt-12">
-
       <h2 className="text-center text-4xl font-bold text-white">
         Selecciona un servicio
       </h2>
@@ -60,7 +59,6 @@ function ServiceSelector() {
       </p>
 
       <div className="mt-12 space-y-8">
-
         {services.map((service) => (
           <ServiceCard
             key={service.id}
@@ -70,15 +68,11 @@ function ServiceSelector() {
             onClick={() => setSelectedService(service)}
           />
         ))}
-
       </div>
 
       <div className="flex flex-col items-center mt-12">
-
         {selectedService && (
-
           <div className="text-center mb-6">
-
             <p className="text-gray-400 text-sm">
               Servicio seleccionado
             </p>
@@ -90,12 +84,11 @@ function ServiceSelector() {
             <p className="text-[#B8860B] mt-2">
               {selectedService.precio} • {selectedService.duracion}
             </p>
-
           </div>
-
         )}
 
         <button
+          onClick={onNext}
           disabled={!selectedService}
           className={`
             px-10
@@ -114,9 +107,7 @@ function ServiceSelector() {
         >
           Continuar
         </button>
-
       </div>
-
     </section>
   );
 }
