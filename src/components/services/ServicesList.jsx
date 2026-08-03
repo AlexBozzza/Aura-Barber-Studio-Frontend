@@ -1,49 +1,33 @@
+import { useEffect, useState } from "react";
 import ServiceCard from "../services/ServiceCard";
-
-import navaja from "../../assets/images/services/protocolo-navaja.jpg";
-import legado from "../../assets/images/services/legado-oro.jpg";
-import duque from "../../assets/images/services/protocolo-duque.jpg";
-import consulado from "../../assets/images/services/gran-consulado.jpg";
+import { getActiveServices } from "../../services/serviceService";
 
 function ServicesList() {
-  const services = [
-    {
-      id: 1,
-      nombre: "Protocolo de la Navaja",
-      precio: "₡5.000",
-      duracion: "30 minutos",
-      descripcion:
-        "Recorte y perfilado de barba, aceites y bálsamos de alta calidad.",
-      imagen: navaja,
-    },
-    {
-      id: 2,
-      nombre: "Legado de Oro",
-      precio: "₡5.000",
-      duracion: "30 minutos",
-      descripcion:
-        "Corte de niño al gusto, lavado de cabello y peinado con productos de alta calidad.",
-      imagen: legado,
-    },
-    {
-      id: 3,
-      nombre: "Protocolo del Duque",
-      precio: "₡7.000",
-      duracion: "30 minutos",
-      descripcion:
-        "Incluye un corte clásico, lavado de cabello y peinado con productos premium.",
-      imagen: duque,
-    },
-    {
-      id: 4,
-      nombre: "Gran Consulado",
-      precio: "₡10.000",
-      duracion: "1 hora",
-      descripcion:
-        "Incluye corte de cabello, perfilado y retoque de barba, lavado y peinado premium.",
-      imagen: consulado,
-    },
-  ];
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    const loadServices = async () => {
+      try {
+        const data = await getActiveServices();
+
+        const formattedServices = data.map((service) => ({
+          id: service.id,
+          nombre: service.name,
+          precio: `₡${Number(service.price).toLocaleString("es-CR")}`,
+          duracion: `${service.duration} minutos`,
+          descripcion: service.description,
+          imagen: service.image,
+        }));
+
+        setServices(formattedServices);
+
+      } catch (error) {
+        console.error("Error cargando servicios:", error);
+      }
+    };
+
+    loadServices();
+  }, []);
 
   return (
     <section className="bg-[#161616] py-24">

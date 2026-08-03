@@ -1,55 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ServiceCard from "../services/ServiceCard";
+import { getActiveServices } from "../../services/serviceService";
 
-import navaja from "../../assets/images/services/protocolo-navaja.jpg";
-import legado from "../../assets/images/services/legado-oro.jpg";
-import duque from "../../assets/images/services/protocolo-duque.jpg";
-import consulado from "../../assets/images/services/gran-consulado.jpg";
+function ServiceSelector({
+  onNext,
+  selectedService,
+  setSelectedService,
+}) {
 
-function ServiceSelector({ onNext }) {
-  const [selectedService, setSelectedService] = useState(null);
+  const [services, setServices] = useState([]);
 
-  const services = [
-    {
-      id: 1,
-      nombre: "Protocolo de la Navaja",
-      precio: "₡5.000",
-      duracion: "30 minutos",
-      descripcion:
-        "Recorte y perfilado de barba, aceites y bálsamos de alta calidad.",
-      imagen: navaja,
-    },
-    {
-      id: 2,
-      nombre: "Legado de Oro",
-      precio: "₡5.000",
-      duracion: "30 minutos",
-      descripcion:
-        "Corte de niño al gusto, lavado de cabello y peinado con productos de alta calidad.",
-      imagen: legado,
-    },
-    {
-      id: 3,
-      nombre: "Protocolo del Duque",
-      precio: "₡7.000",
-      duracion: "30 minutos",
-      descripcion:
-        "Incluye un corte clásico, lavado de cabello y peinado con productos premium.",
-      imagen: duque,
-    },
-    {
-      id: 4,
-      nombre: "Gran Consulado",
-      precio: "₡10.000",
-      duracion: "1 hora",
-      descripcion:
-        "Incluye corte de cabello, perfilado y retoque de barba, lavado y peinado premium.",
-      imagen: consulado,
-    },
-  ];
+  useEffect(() => {
+
+    const loadServices = async () => {
+
+      try {
+
+        const data = await getActiveServices();
+
+        const formattedServices = data.map((service) => ({
+          id: service.id,
+          nombre: service.name,
+          precio: `₡${Number(service.price).toLocaleString("es-CR")}`,
+          duracion: `${service.duration} minutos`,
+          descripcion: service.description,
+          imagen: service.image,
+          duration: service.duration,
+          price: service.price
+        }));
+
+        setServices(formattedServices);
+
+      } catch (error) {
+
+        console.error("Error cargando servicios:", error);
+
+      }
+
+    };
+
+    loadServices();
+
+  }, []);
 
   return (
+
     <section className="mt-12">
+
       <h2 className="text-center text-4xl font-bold text-white">
         Selecciona un servicio
       </h2>
@@ -59,7 +56,9 @@ function ServiceSelector({ onNext }) {
       </p>
 
       <div className="mt-12 space-y-8">
+
         {services.map((service) => (
+
           <ServiceCard
             key={service.id}
             service={service}
@@ -67,12 +66,17 @@ function ServiceSelector({ onNext }) {
             selected={selectedService?.id === service.id}
             onClick={() => setSelectedService(service)}
           />
+
         ))}
+
       </div>
 
       <div className="flex flex-col items-center mt-12">
+
         {selectedService && (
+
           <div className="text-center mb-6">
+
             <p className="text-gray-400 text-sm">
               Servicio seleccionado
             </p>
@@ -84,7 +88,9 @@ function ServiceSelector({ onNext }) {
             <p className="text-[#B8860B] mt-2">
               {selectedService.precio} • {selectedService.duracion}
             </p>
+
           </div>
+
         )}
 
         <button
@@ -97,7 +103,6 @@ function ServiceSelector({ onNext }) {
             font-semibold
             transition-all
             duration-300
-
             ${
               selectedService
                 ? "bg-[#B8860B] hover:bg-[#DAA520] text-white"
@@ -107,9 +112,13 @@ function ServiceSelector({ onNext }) {
         >
           Continuar
         </button>
+
       </div>
+
     </section>
+
   );
+
 }
 
 export default ServiceSelector;

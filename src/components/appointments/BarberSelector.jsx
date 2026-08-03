@@ -1,27 +1,62 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BarberCard from "./BarberCard";
+import { getAvailableBarbers } from "../../services/barberService";
 
-import barberImage from "../../assets/images/barbers/andrey.jpg";
+function BarberSelector({
+  onNext,
+  selectedBarber,
+  setSelectedBarber,
+  service,
+}) {
 
-function BarberSelector({ onNext }) {
-  const [selectedBarber, setSelectedBarber] = useState(null);
+  const [barbers, setBarbers] = useState([]);
 
-  const barber = {
-    id: 1,
-    nombre: "Andrey Vargas",
-    cargo: "Barbero Profesional",
-    experiencia: "Más de 10 años de experiencia",
-    imagen: barberImage,
-    especialidades: [
-      "Cortes clásicos",
-      "Fade",
-      "Perfilado de barba",
-      "Estilos modernos",
-    ],
-  };
+  useEffect(() => {
+
+    const loadBarbers = async () => {
+
+      try {
+
+        const data = await getAvailableBarbers();
+
+        let formattedBarbers = data.map((barber) => ({
+          id: barber.id,
+          nombre: `${barber.first_name} ${barber.last_name}`,
+          cargo: "Barbero Profesional",
+          experiencia: `${barber.experience_years} años de experiencia`,
+          imagen: barber.image,
+          especialidades: barber.services.map((s) => s.name),
+          services: barber.services
+        }));
+
+        // Mostrar únicamente los barberos que realizan
+        // el servicio seleccionado
+        if (service) {
+
+          formattedBarbers = formattedBarbers.filter((barber) =>
+            barber.services.some((s) => s.id === service.id)
+          );
+
+        }
+
+        setBarbers(formattedBarbers);
+
+      } catch (error) {
+
+        console.error("Error cargando barberos:", error);
+
+      }
+
+    };
+
+    loadBarbers();
+
+  }, [service]);
 
   return (
+
     <section className="mt-12">
+
       <h2 className="text-center text-4xl font-bold text-white">
         Selecciona tu barbero
       </h2>
@@ -31,17 +66,27 @@ function BarberSelector({ onNext }) {
         toda la experiencia en Aura Barber Studio.
       </p>
 
-      <div className="mt-10">
-        <BarberCard
-          barber={barber}
-          selected={selectedBarber?.id === barber.id}
-          onClick={() => setSelectedBarber(barber)}
-        />
+      <div className="mt-10 space-y-8">
+
+        {barbers.map((barber) => (
+
+          <BarberCard
+            key={barber.id}
+            barber={barber}
+            selected={selectedBarber?.id === barber.id}
+            onClick={() => setSelectedBarber(barber)}
+          />
+
+        ))}
+
       </div>
 
       <div className="flex flex-col items-center mt-8">
+
         {selectedBarber && (
+
           <div className="text-center mb-6">
+
             <p className="text-gray-400 text-sm uppercase tracking-wider">
               Barbero seleccionado
             </p>
@@ -53,7 +98,9 @@ function BarberSelector({ onNext }) {
             <p className="text-[#B8860B] mt-2">
               {selectedBarber.cargo}
             </p>
+
           </div>
+
         )}
 
         <button
@@ -67,7 +114,6 @@ function BarberSelector({ onNext }) {
             transition-all
             duration-300
             shadow-lg
-
             ${
               selectedBarber
                 ? "bg-[#B8860B] hover:bg-[#DAA520] hover:scale-105 text-white"
@@ -77,9 +123,13 @@ function BarberSelector({ onNext }) {
         >
           Continuar
         </button>
+
       </div>
+
     </section>
+
   );
+
 }
 
 export default BarberSelector;

@@ -175,6 +175,37 @@ class Appointment {
   }
 
 
+  // ✅ Obtener duración del servicio
+  static async getServiceDuration(service_id) {
+
+    const [rows] = await pool.execute(
+      `SELECT duration
+      FROM services
+      WHERE id = ?`,
+      [service_id]
+    );
+
+    return rows[0] || null;
+  }
+
+  // ✅ Obtener duración de un servicio
+static async getServiceDuration(service_id) {
+
+  const [rows] = await pool.execute(
+    `SELECT
+        id,
+        duration,
+        price,
+        name
+     FROM services
+     WHERE id = ?`,
+    [service_id]
+  );
+
+  return rows[0] || null;
+
+}
+
   // ✅ Cambiar estado
   static async updateStatus(id, status) {
 
