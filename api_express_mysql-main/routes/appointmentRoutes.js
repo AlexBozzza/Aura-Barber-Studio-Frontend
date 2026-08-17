@@ -7,52 +7,91 @@ const router = express.Router();
 
 const AppointmentController = require("../controllers/appointmentController");
 
-// ✅ Obtener horarios disponibles
+const {
+  authenticateToken
+} = require("../middleware/auth");
+
+
+// ==========================================
+// OBTENER HORARIOS DISPONIBLES
+// ==========================================
+
 router.get(
   "/available-slots",
   AppointmentController.getAvailableSlots
 );
 
-// ✅ Obtener todas las citas
+
+// ==========================================
+// OBTENER TODAS LAS CITAS
+// ==========================================
+
 router.get(
   "/",
   AppointmentController.getAppointments
 );
 
-// ✅ Obtener citas por fecha
+
+// ==========================================
+// OBTENER CITAS POR FECHA
+// ==========================================
+
 router.get(
   "/date",
   AppointmentController.getAppointmentsByDate
 );
 
-// ✅ Obtener agenda de un barbero
+
+// ==========================================
+// OBTENER AGENDA DE UN BARBERO
+// ==========================================
+
 router.get(
   "/barber",
   AppointmentController.getBarberAppointments
 );
 
-// ✅ Obtener cita por ID
+
+// ==========================================
+// OBTENER CITA POR ID
+// ==========================================
+
 router.get(
   "/:id",
   AppointmentController.getAppointmentById
 );
 
-// ✅ Crear cita
+
+// ==========================================
+// CREAR CITA
+// Requiere usuario autenticado
+// ==========================================
+
 router.post(
   "/",
+  authenticateToken,
   AppointmentController.createAppointment
 );
 
-// ✅ Cambiar estado de la cita
+
+// ==========================================
+// CAMBIAR ESTADO DE LA CITA
+// ==========================================
+
 router.patch(
   "/:id/status",
   AppointmentController.updateStatus
 );
 
-// ✅ Eliminar cita
+
+// ==========================================
+// ELIMINAR CITA
+// ==========================================
+
 router.delete(
   "/:id",
   AppointmentController.deleteAppointment
 );
+
 
 module.exports = router;
