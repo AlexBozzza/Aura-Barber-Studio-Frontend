@@ -169,6 +169,44 @@ function AdminSidebar() {
         border-gray-800
       ">
 
+
+        {/* ==========================================
+            VOLVER A LA PÁGINA PRINCIPAL
+        ========================================== */}
+
+        <Link
+          to="/"
+          className="
+            w-full
+            flex
+            items-center
+            gap-4
+            px-4
+            py-3
+            rounded-xl
+            text-gray-400
+            hover:bg-[#242424]
+            hover:text-white
+            transition
+            mb-2
+          "
+        >
+
+          <span className="text-lg">
+            🏠
+          </span>
+
+          <span className="font-medium">
+            Página principal
+          </span>
+
+        </Link>
+
+
+        {/* ==========================================
+            CERRAR SESIÓN
+        ========================================== */}
+
         <button
           onClick={() => {
 
@@ -202,6 +240,7 @@ function AdminSidebar() {
           </span>
 
         </button>
+
 
       </div>
 

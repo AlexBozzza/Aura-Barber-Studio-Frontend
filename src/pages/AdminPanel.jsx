@@ -1,225 +1,706 @@
+import { useEffect, useState } from "react";
+import {
+    FaCalendarDay,
+    FaClock,
+    FaUsers,
+    FaCut,
+    FaMoneyBillWave,
+    FaCheckCircle
+} from "react-icons/fa";
+
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminHeader from "../components/admin/AdminHeader";
 
+import { getDashboardData } from "../services/dashboardService";
+
+
 function AdminPanel() {
 
-  return (
+    const [dashboard, setDashboard] = useState(null);
 
-    <div className="min-h-screen bg-[#111111] text-white">
+    const [loading, setLoading] = useState(true);
 
-      {/* SIDEBAR */}
-
-      <AdminSidebar />
+    const [error, setError] = useState("");
 
 
-      {/* CONTENIDO PRINCIPAL */}
+    // ==========================================
+    // CARGAR DASHBOARD
+    // ==========================================
 
-      <div className="ml-64">
+    const loadDashboard = async () => {
 
-        <AdminHeader />
+        try {
 
+            setLoading(true);
 
-        <main className="p-8">
+            setError("");
 
-          {/* TÍTULO */}
+            const data =
+                await getDashboardData();
 
-          <div className="mb-8">
+            setDashboard(data);
 
-            <h1 className="
-              text-3xl
-              font-bold
-            ">
-              Dashboard
-            </h1>
+        } catch (error) {
 
-            <p className="
-              text-gray-400
-              mt-2
-            ">
-              Bienvenido al panel administrativo de AuraBarberStudio.
-            </p>
+            console.error(
+                "Error al cargar dashboard:",
+                error
+            );
 
-          </div>
+            setError(
+                "No se pudieron cargar los datos del dashboard."
+            );
 
+        } finally {
 
-          {/* ESTADÍSTICAS */}
+            setLoading(false);
 
-          <div className="
-            grid
-            grid-cols-1
-            md:grid-cols-2
-            xl:grid-cols-4
-            gap-6
-          ">
+        }
+    };
 
 
-            {/* CITAS DE HOY */}
+    // ==========================================
+    // CARGAR AL ENTRAR
+    // ==========================================
 
-            <div className="
-              bg-[#202020]
-              border
-              border-gray-700
-              rounded-2xl
-              p-6
-            ">
+    useEffect(() => {
 
-              <p className="text-gray-400">
-                Citas de hoy
-              </p>
+        loadDashboard();
 
-              <h2 className="
-                text-4xl
-                font-bold
-                text-[#B8860B]
-                mt-3
-              ">
-                0
-              </h2>
-
-            </div>
+    }, []);
 
 
-            {/* PENDIENTES */}
+    // ==========================================
+    // FORMATO DE MONEDA
+    // ==========================================
 
-            <div className="
-              bg-[#202020]
-              border
-              border-gray-700
-              rounded-2xl
-              p-6
-            ">
+    const formatCurrency = (value) => {
 
-              <p className="text-gray-400">
-                Citas pendientes
-              </p>
+        return new Intl.NumberFormat(
+            "es-CR",
+            {
+                style: "currency",
+                currency: "CRC",
+                minimumFractionDigits: 0
+            }
+        ).format(value || 0);
 
-              <h2 className="
-                text-4xl
-                font-bold
-                text-[#B8860B]
-                mt-3
-              ">
-                0
-              </h2>
-
-            </div>
+    };
 
 
-            {/* CLIENTES */}
+    // ==========================================
+    // FORMATO DE HORA
+    // ==========================================
 
-            <div className="
-              bg-[#202020]
-              border
-              border-gray-700
-              rounded-2xl
-              p-6
-            ">
+    const formatTime = (time) => {
 
-              <p className="text-gray-400">
-                Clientes
-              </p>
+        if (!time) return "--:--";
 
-              <h2 className="
-                text-4xl
-                font-bold
-                text-[#B8860B]
-                mt-3
-              ">
-                0
-              </h2>
+        return String(time).slice(0, 5);
 
-            </div>
+    };
 
 
-            {/* SERVICIOS */}
+    // ==========================================
+    // ESTADO DE CITA
+    // ==========================================
 
-            <div className="
-              bg-[#202020]
-              border
-              border-gray-700
-              rounded-2xl
-              p-6
-            ">
+    const getStatusLabel = (status) => {
 
-              <p className="text-gray-400">
-                Servicios
-              </p>
+        const statuses = {
 
-              <h2 className="
-                text-4xl
-                font-bold
-                text-[#B8860B]
-                mt-3
-              ">
-                0
-              </h2>
+            PENDING: "Pendiente",
 
-            </div>
+            CONFIRMED: "Confirmada",
 
-          </div>
+            COMPLETED: "Completada",
+
+            CANCELLED: "Cancelada"
+
+        };
+
+        return statuses[status] || status;
+
+    };
 
 
-          {/* PRÓXIMAS CITAS */}
+    const getStatusClasses = (status) => {
 
-          <div className="
-            mt-10
-            bg-[#202020]
-            border
-            border-gray-700
-            rounded-2xl
-            p-6
-          ">
+        const classes = {
 
-            <div className="
-              flex
-              items-center
-              justify-between
-              mb-6
-            ">
+            PENDING:
+                "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
 
-              <div>
+            CONFIRMED:
+                "bg-blue-500/10 text-blue-400 border-blue-500/20",
 
-                <h2 className="
-                  text-2xl
-                  font-bold
-                ">
-                  Próximas citas
-                </h2>
+            COMPLETED:
+                "bg-green-500/10 text-green-400 border-green-500/20",
 
-                <p className="
-                  text-gray-400
-                  mt-1
-                ">
-                  Resumen de las próximas reservas.
-                </p>
+            CANCELLED:
+                "bg-red-500/10 text-red-400 border-red-500/20"
 
-              </div>
+        };
+
+        return classes[status] ||
+            "bg-gray-500/10 text-gray-400 border-gray-500/20";
+
+    };
+
+
+    // ==========================================
+    // LOADING
+    // ==========================================
+
+    if (loading) {
+
+        return (
+
+            <div className="min-h-screen bg-[#111111] text-white">
+
+                <AdminSidebar />
+
+                <div className="ml-64">
+
+                    <AdminHeader />
+
+                    <main className="p-8">
+
+                        <div className="flex items-center justify-center min-h-[400px]">
+
+                            <div className="text-gray-400">
+
+                                Cargando dashboard...
+
+                            </div>
+
+                        </div>
+
+                    </main>
+
+                </div>
 
             </div>
 
+        );
 
-            {/* POR AHORA VACÍO */}
+    }
 
-            <div className="
-              py-12
-              text-center
-              text-gray-500
-            ">
 
-              No hay citas para mostrar.
+    // ==========================================
+    // ERROR
+    // ==========================================
+
+    if (error || !dashboard) {
+
+        return (
+
+            <div className="min-h-screen bg-[#111111] text-white">
+
+                <AdminSidebar />
+
+                <div className="ml-64">
+
+                    <AdminHeader />
+
+                    <main className="p-8">
+
+                        <div className="bg-[#202020] border border-red-500/20 rounded-2xl p-8 text-center">
+
+                            <p className="text-red-400 mb-4">
+
+                                {error ||
+                                    "No se pudieron cargar los datos."}
+
+                            </p>
+
+                            <button
+                                onClick={loadDashboard}
+                                className="px-5 py-2 bg-white text-black rounded-lg hover:bg-gray-200 transition"
+                            >
+                                Reintentar
+                            </button>
+
+                        </div>
+
+                    </main>
+
+                </div>
 
             </div>
 
-          </div>
+        );
 
-        </main>
+    }
 
-      </div>
 
-    </div>
+    return (
 
-  );
+        <div className="min-h-screen bg-[#111111] text-white">
+
+            <AdminSidebar />
+
+            <div className="ml-64">
+
+                <AdminHeader />
+
+                <main className="p-8">
+
+                    {/* ==================================
+                        ENCABEZADO
+                    ================================== */}
+
+                    <div className="mb-8">
+
+                        <h1 className="text-3xl font-bold">
+
+                            Dashboard
+
+                        </h1>
+
+                        <p className="text-gray-400 mt-2">
+
+                            Resumen general de AuraBarberStudio.
+
+                        </p>
+
+                    </div>
+
+
+                    {/* ==================================
+                        TARJETAS PRINCIPALES
+                    ================================== */}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+
+                        {/* CITAS DE HOY */}
+
+                        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                            <div className="flex items-center justify-between">
+
+                                <div>
+
+                                    <p className="text-gray-400 text-sm">
+
+                                        Citas de hoy
+
+                                    </p>
+
+                                    <h2 className="text-3xl font-bold mt-2">
+
+                                        {dashboard.todayAppointments}
+
+                                    </h2>
+
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+
+                                    <FaCalendarDay className="text-blue-400 text-xl" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* PENDIENTES */}
+
+                        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                            <div className="flex items-center justify-between">
+
+                                <div>
+
+                                    <p className="text-gray-400 text-sm">
+
+                                        Citas pendientes
+
+                                    </p>
+
+                                    <h2 className="text-3xl font-bold mt-2">
+
+                                        {dashboard.pendingAppointments}
+
+                                    </h2>
+
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+
+                                    <FaClock className="text-yellow-400 text-xl" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* CLIENTES */}
+
+                        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                            <div className="flex items-center justify-between">
+
+                                <div>
+
+                                    <p className="text-gray-400 text-sm">
+
+                                        Total de clientes
+
+                                    </p>
+
+                                    <h2 className="text-3xl font-bold mt-2">
+
+                                        {dashboard.totalClients}
+
+                                    </h2>
+
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+
+                                    <FaUsers className="text-purple-400 text-xl" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* SERVICIOS */}
+
+                        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                            <div className="flex items-center justify-between">
+
+                                <div>
+
+                                    <p className="text-gray-400 text-sm">
+
+                                        Servicios activos
+
+                                    </p>
+
+                                    <h2 className="text-3xl font-bold mt-2">
+
+                                        {dashboard.activeServices}
+
+                                    </h2>
+
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+
+                                    <FaCut className="text-green-400 text-xl" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ==================================
+                        INGRESOS
+                    ================================== */}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+
+
+                        {/* INGRESO POTENCIAL */}
+
+                        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                            <div className="flex items-center justify-between">
+
+                                <div>
+
+                                    <p className="text-gray-400 text-sm">
+
+                                        Ingreso potencial de hoy
+
+                                    </p>
+
+                                    <h2 className="text-3xl font-bold mt-2">
+
+                                        {formatCurrency(
+                                            dashboard.potentialRevenue
+                                        )}
+
+                                    </h2>
+
+                                    <p className="text-gray-500 text-sm mt-2">
+
+                                        Citas pendientes y confirmadas
+
+                                    </p>
+
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+
+                                    <FaMoneyBillWave className="text-emerald-400 text-xl" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* INGRESO REALIZADO */}
+
+                        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                            <div className="flex items-center justify-between">
+
+                                <div>
+
+                                    <p className="text-gray-400 text-sm">
+
+                                        Ingreso realizado hoy
+
+                                    </p>
+
+                                    <h2 className="text-3xl font-bold mt-2">
+
+                                        {formatCurrency(
+                                            dashboard.completedRevenue
+                                        )}
+
+                                    </h2>
+
+                                    <p className="text-gray-500 text-sm mt-2">
+
+                                        Servicios completados
+
+                                    </p>
+
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
+
+                                    <FaCheckCircle className="text-green-400 text-xl" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* ==================================
+                        AGENDA DE HOY
+                    ================================== */}
+
+                    <div className="mt-10 bg-[#202020] border border-gray-700 rounded-2xl p-6">
+
+                        <div className="mb-6">
+
+                            <h2 className="text-xl font-semibold">
+
+                                Agenda de hoy
+
+                            </h2>
+
+                            <p className="text-gray-400 text-sm mt-1">
+
+                                Citas programadas para el día de hoy.
+
+                            </p>
+
+                        </div>
+
+
+                        {dashboard.todaySchedule.length === 0 ? (
+
+                            <div className="py-12 text-center">
+
+                                <FaCalendarDay className="mx-auto text-3xl text-gray-600 mb-4" />
+
+                                <p className="text-gray-500">
+
+                                    No hay citas programadas para hoy.
+
+                                </p>
+
+                            </div>
+
+                        ) : (
+
+                            <div className="space-y-3">
+
+                                {dashboard.todaySchedule.map(
+                                    (appointment) => (
+
+                                        <div
+                                            key={appointment.id}
+                                            className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-4 rounded-xl bg-[#171717] border border-gray-800"
+                                        >
+
+                                            {/* HORA */}
+
+                                            <div className="flex items-center gap-4 min-w-[120px]">
+
+                                                <div className="w-11 h-11 rounded-lg bg-white/5 flex items-center justify-center">
+
+                                                    <FaClock className="text-gray-400" />
+
+                                                </div>
+
+                                                <div>
+
+                                                    <p className="font-semibold">
+
+                                                        {formatTime(
+                                                            appointment.start_time
+                                                        )}
+
+                                                    </p>
+
+                                                    <p className="text-xs text-gray-500">
+
+                                                        {formatTime(
+                                                            appointment.end_time
+                                                        )}
+
+                                                    </p>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            {/* CLIENTE */}
+
+                                            <div className="flex-1">
+
+                                                <p className="text-xs text-gray-500 mb-1">
+
+                                                    Cliente
+
+                                                </p>
+
+                                                <p className="font-medium">
+
+                                                    {appointment.client_first_name}{" "}
+
+                                                    {appointment.client_last_name}
+
+                                                </p>
+
+                                            </div>
+
+
+                                            {/* SERVICIO */}
+
+                                            <div className="flex-1">
+
+                                                <p className="text-xs text-gray-500 mb-1">
+
+                                                    Servicio
+
+                                                </p>
+
+                                                <p className="font-medium">
+
+                                                    {appointment.service_name}
+
+                                                </p>
+
+                                            </div>
+
+
+                                            {/* BARBERO */}
+
+                                            <div className="flex-1">
+
+                                                <p className="text-xs text-gray-500 mb-1">
+
+                                                    Barbero
+
+                                                </p>
+
+                                                <p className="font-medium">
+
+                                                    {appointment.barber_first_name}{" "}
+
+                                                    {appointment.barber_last_name}
+
+                                                </p>
+
+                                            </div>
+
+
+                                            {/* PRECIO */}
+
+                                            <div className="min-w-[100px]">
+
+                                                <p className="text-xs text-gray-500 mb-1">
+
+                                                    Precio
+
+                                                </p>
+
+                                                <p className="font-medium">
+
+                                                    {formatCurrency(
+                                                        appointment.service_price
+                                                    )}
+
+                                                </p>
+
+                                            </div>
+
+
+                                            {/* ESTADO */}
+
+                                            <div>
+
+                                                <span
+                                                    className={`inline-flex items-center px-3 py-1 rounded-full border text-xs font-medium ${getStatusClasses(
+                                                        appointment.status
+                                                    )}`}
+                                                >
+
+                                                    {getStatusLabel(
+                                                        appointment.status
+                                                    )}
+
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    )
+                                )}
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                </main>
+
+            </div>
+
+        </div>
+
+    );
 
 }
+
 
 export default AdminPanel;

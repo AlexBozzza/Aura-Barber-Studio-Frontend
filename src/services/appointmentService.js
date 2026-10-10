@@ -55,6 +55,21 @@ export const getAppointments = async () => {
 
 
 // ==========================================
+// OBTENER MIS CITAS
+// Usuario autenticado
+// ==========================================
+
+export const getMyAppointments = async () => {
+
+  const response = await api.get(
+    "/appointments/my-appointments"
+  );
+
+  return response.data.data;
+};
+
+
+// ==========================================
 // ACTUALIZAR ESTADO DE UNA CITA
 // ==========================================
 

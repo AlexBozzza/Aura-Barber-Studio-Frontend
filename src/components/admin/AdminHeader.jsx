@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { getCurrentUser } from "../../services/authService";
 
 function AdminHeader() {
@@ -19,6 +20,7 @@ function AdminHeader() {
       justify-between
       px-8
     ">
+
 
       {/* ==========================================
           TÍTULO
@@ -49,13 +51,21 @@ function AdminHeader() {
           USUARIO
       ========================================== */}
 
-      <div className="
-        flex
-        items-center
-        gap-4
-      ">
+      <Link
+        to="/admin/profile"
+        className="
+          flex
+          items-center
+          gap-4
+          rounded-xl
+          px-3
+          py-2
+          hover:bg-[#242424]
+          transition
+        "
+      >
 
-        {/* Información */}
+        {/* INFORMACIÓN */}
 
         <div className="text-right">
 
@@ -78,7 +88,7 @@ function AdminHeader() {
         </div>
 
 
-        {/* Avatar */}
+        {/* AVATAR */}
 
         <div className="
           w-11
@@ -97,7 +107,7 @@ function AdminHeader() {
 
         </div>
 
-      </div>
+      </Link>
 
     </header>
 

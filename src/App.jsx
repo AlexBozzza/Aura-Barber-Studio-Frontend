@@ -7,9 +7,13 @@ import Appointments from "./pages/Appointments";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminPanel from "./pages/AdminPanel";
+import Profile from "./pages/Profile";
+import MyAppointments from "./pages/MyAppointments";
 
+import AdminServices from "./components/admin/AdminServices";
 import AdminAppointments from "./components/admin/AdminAppointments";
 import AdminClients from "./components/admin/AdminClients";
+import AdminProfile from "./components/admin/AdminProfile";
 
 import AdminSidebar from "./components/admin/AdminSidebar";
 import AdminHeader from "./components/admin/AdminHeader";
@@ -55,6 +59,38 @@ function App() {
       <Route
         path="/register"
         element={<Register />}
+      />
+
+
+      {/* ==========================================
+          PERFIL DEL USUARIO
+      ========================================== */}
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+
+            <Profile />
+
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* ==========================================
+          MIS CITAS
+      ========================================== */}
+
+      <Route
+        path="/my-appointments"
+        element={
+          <ProtectedRoute>
+
+            <MyAppointments />
+
+          </ProtectedRoute>
+        }
       />
 
 
@@ -126,6 +162,70 @@ function App() {
                 <main className="p-8">
 
                   <AdminClients />
+
+                </main>
+
+              </div>
+
+            </div>
+
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* ==========================================
+          SERVICIOS ADMINISTRATIVOS
+      ========================================== */}
+
+      <Route
+        path="/admin/services"
+        element={
+          <ProtectedRoute role="BARBER">
+
+            <div className="min-h-screen bg-[#111111] text-white">
+
+              <AdminSidebar />
+
+              <div className="ml-64">
+
+                <AdminHeader />
+
+                <main className="p-8">
+
+                  <AdminServices />
+
+                </main>
+
+              </div>
+
+            </div>
+
+          </ProtectedRoute>
+        }
+      />
+
+
+      {/* ==========================================
+          PERFIL ADMINISTRATIVO
+      ========================================== */}
+
+      <Route
+        path="/admin/profile"
+        element={
+          <ProtectedRoute role="BARBER">
+
+            <div className="min-h-screen bg-[#111111] text-white">
+
+              <AdminSidebar />
+
+              <div className="ml-64">
+
+                <AdminHeader />
+
+                <main className="p-8">
+
+                  <AdminProfile />
 
                 </main>
 

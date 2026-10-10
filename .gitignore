@@ -7,10 +7,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies and build output
+node_modules/
+dist/
+dist-ssr/
 *.local
+
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+
+# Backend separado del frontend
+api_express_mysql-main/
 
 # Editor directories and files
 .vscode/*
