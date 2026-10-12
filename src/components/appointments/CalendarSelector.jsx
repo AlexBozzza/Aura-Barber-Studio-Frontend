@@ -12,7 +12,23 @@ function CalendarSelector({
   onNext,
 }) {
 
-  const today = new Date();
+  // Obtener la fecha actual según la zona horaria de Costa Rica
+  const getCostaRicaToday = () => {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Costa_Rica",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(new Date());
+
+    const year = Number(parts.find(p => p.type === "year").value);
+    const month = Number(parts.find(p => p.type === "month").value) - 1;
+    const day = Number(parts.find(p => p.type === "day").value);
+
+    return new Date(year, month, day);
+  };
+
+  const today = getCostaRicaToday();
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [month, setMonth] = useState(today.getMonth());
@@ -32,8 +48,12 @@ function CalendarSelector({
 
         setLoadingSlots(true);
 
-        const appointmentDate =
-          selectedDate.toISOString().split("T")[0];
+        // Formatear la fecha seleccionada sin convertirla a UTC
+        const appointmentDate = [
+          selectedDate.getFullYear(),
+          String(selectedDate.getMonth() + 1).padStart(2, "0"),
+          String(selectedDate.getDate()).padStart(2, "0"),
+        ].join("-");
 
         const slots = await getAvailableSlots(
           barber.id,

@@ -15,7 +15,28 @@ function CalendarGrid({
     "Dom",
   ];
 
-  const today = new Date();
+  // Obtener la fecha actual de Costa Rica
+  const costaRicaDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Costa_Rica",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const todayYear = Number(
+    costaRicaDate.find((part) => part.type === "year").value
+  );
+
+  const todayMonth = Number(
+    costaRicaDate.find((part) => part.type === "month").value
+  ) - 1;
+
+  const todayDay = Number(
+    costaRicaDate.find((part) => part.type === "day").value
+  );
+
+  // Fecha de hoy representada como fecha local, sin hora
+  const today = new Date(todayYear, todayMonth, todayDay);
 
   // Primer día del mes
   const firstDay = new Date(year, month, 1);
@@ -85,21 +106,18 @@ function CalendarGrid({
           );
 
           const isToday =
-            currentDate.toDateString() ===
-            today.toDateString();
+            year === todayYear &&
+            month === todayMonth &&
+            day === todayDay;
 
           const isPast =
-            currentDate <
-            new Date(
-              today.getFullYear(),
-              today.getMonth(),
-              today.getDate()
-            );
+            currentDate < today;
 
           const isSelected =
             selectedDate &&
-            currentDate.toDateString() ===
-            selectedDate.toDateString();
+            currentDate.getFullYear() === selectedDate.getFullYear() &&
+            currentDate.getMonth() === selectedDate.getMonth() &&
+            currentDate.getDate() === selectedDate.getDate();
 
           return (
 
