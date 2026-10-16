@@ -20,228 +20,120 @@ import AdminHeader from "./components/admin/AdminHeader";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
-
 function App() {
-
   return (
-
     <Routes>
+      {/* PÁGINAS PÚBLICAS */}
+      <Route path="/" element={<Home />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/services" element={<Services />} />
+      <Route path="/appointments" element={<Appointments />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-      {/* ==========================================
-          PÁGINAS PÚBLICAS
-      ========================================== */}
-
-      <Route
-        path="/"
-        element={<Home />}
-      />
-
-      <Route
-        path="/contact"
-        element={<Contact />}
-      />
-
-      <Route
-        path="/services"
-        element={<Services />}
-      />
-
-      <Route
-        path="/appointments"
-        element={<Appointments />}
-      />
-
-      <Route
-        path="/login"
-        element={<Login />}
-      />
-
-      <Route
-        path="/register"
-        element={<Register />}
-      />
-
-
-      {/* ==========================================
-          PERFIL DEL USUARIO
-      ========================================== */}
-
+      {/* PERFIL DEL USUARIO */}
       <Route
         path="/profile"
         element={
           <ProtectedRoute>
-
             <Profile />
-
           </ProtectedRoute>
         }
       />
 
-
-      {/* ==========================================
-          MIS CITAS
-      ========================================== */}
-
+      {/* MIS CITAS */}
       <Route
         path="/my-appointments"
         element={
           <ProtectedRoute>
-
             <MyAppointments />
-
           </ProtectedRoute>
         }
       />
 
-
-      {/* ==========================================
-          PANEL ADMINISTRATIVO
-      ========================================== */}
-
+      {/* DASHBOARD ADMINISTRATIVO */}
       <Route
         path="/admin"
         element={
           <ProtectedRoute role="BARBER">
-
             <AdminPanel />
-
           </ProtectedRoute>
         }
       />
 
-
-      {/* ==========================================
-          CITAS ADMINISTRATIVAS
-      ========================================== */}
-
+      {/* CITAS ADMINISTRATIVAS */}
       <Route
         path="/admin/appointments"
         element={
           <ProtectedRoute role="BARBER">
-
-            <div className="min-h-screen bg-[#111111] text-white">
-
+            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
               <AdminSidebar />
-
-              <div className="ml-64">
-
+              <div className="ml-0 min-w-0 w-full lg:ml-64">
                 <AdminHeader />
-
-                <main className="p-8">
-
+                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
                   <AdminAppointments />
-
                 </main>
-
               </div>
-
             </div>
-
           </ProtectedRoute>
         }
       />
 
-
-      {/* ==========================================
-          CLIENTES ADMINISTRATIVOS
-      ========================================== */}
-
+      {/* CLIENTES ADMINISTRATIVOS */}
       <Route
         path="/admin/clients"
         element={
           <ProtectedRoute role="BARBER">
-
-            <div className="min-h-screen bg-[#111111] text-white">
-
+            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
               <AdminSidebar />
-
-              <div className="ml-64">
-
+              <div className="ml-0 min-w-0 w-full lg:ml-64">
                 <AdminHeader />
-
-                <main className="p-8">
-
+                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
                   <AdminClients />
-
                 </main>
-
               </div>
-
             </div>
-
           </ProtectedRoute>
         }
       />
 
-
-      {/* ==========================================
-          SERVICIOS ADMINISTRATIVOS
-      ========================================== */}
-
+      {/* SERVICIOS ADMINISTRATIVOS */}
       <Route
         path="/admin/services"
         element={
           <ProtectedRoute role="BARBER">
-
-            <div className="min-h-screen bg-[#111111] text-white">
-
+            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
               <AdminSidebar />
-
-              <div className="ml-64">
-
+              <div className="ml-0 min-w-0 w-full lg:ml-64">
                 <AdminHeader />
-
-                <main className="p-8">
-
+                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
                   <AdminServices />
-
                 </main>
-
               </div>
-
             </div>
-
           </ProtectedRoute>
         }
       />
 
-
-      {/* ==========================================
-          PERFIL ADMINISTRATIVO
-      ========================================== */}
-
+      {/* PERFIL ADMINISTRATIVO */}
       <Route
         path="/admin/profile"
         element={
           <ProtectedRoute role="BARBER">
-
-            <div className="min-h-screen bg-[#111111] text-white">
-
+            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
               <AdminSidebar />
-
-              <div className="ml-64">
-
+              <div className="ml-0 min-w-0 w-full lg:ml-64">
                 <AdminHeader />
-
-                <main className="p-8">
-
+                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
                   <AdminProfile />
-
                 </main>
-
               </div>
-
             </div>
-
           </ProtectedRoute>
         }
       />
-
     </Routes>
-
   );
-
 }
-
 
 export default App;

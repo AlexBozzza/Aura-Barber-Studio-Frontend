@@ -639,9 +639,7 @@ function AdminAppointments() {
 
   return (
 
-    <div className="
-      text-white
-    ">
+    <div className="text-white min-w-0 w-full">
 
 
       {/* ==========================================
@@ -654,8 +652,9 @@ function AdminAppointments() {
         xl:flex-row
         xl:items-end
         xl:justify-between
-        gap-6
-        mb-8
+        gap-4
+        mb-6
+        min-w-0
       ">
 
 
@@ -674,7 +673,8 @@ function AdminAppointments() {
 
 
           <h1 className="
-            text-3xl
+            text-2xl
+            sm:text-3xl
             lg:text-4xl
             font-bold
           ">
@@ -683,6 +683,8 @@ function AdminAppointments() {
 
 
           <p className="
+            text-sm
+            sm:text-base
             text-gray-400
             mt-2
           ">
@@ -701,6 +703,7 @@ function AdminAppointments() {
           flex
           flex-col
           gap-3
+          min-w-0
         ">
 
           <label className="
@@ -717,6 +720,7 @@ function AdminAppointments() {
             flex
             flex-wrap
             gap-2
+            min-w-0
           ">
 
 
@@ -725,8 +729,10 @@ function AdminAppointments() {
             <button
               onClick={goToPreviousDay}
               className="
-                px-4
-                py-3
+                px-3
+                sm:px-4
+                py-2
+                sm:py-3
                 rounded-xl
                 border
                 border-gray-700
@@ -757,8 +763,10 @@ function AdminAppointments() {
                 border
                 border-gray-700
                 rounded-xl
-                px-4
-                py-3
+                px-3
+                sm:px-4
+                py-2
+                sm:py-3
                 text-white
                 focus:outline-none
                 focus:border-[#B8860B]
@@ -772,8 +780,10 @@ function AdminAppointments() {
             <button
               onClick={goToNextDay}
               className="
-                px-4
-                py-3
+                px-3
+                sm:px-4
+                py-2
+                sm:py-3
                 rounded-xl
                 border
                 border-gray-700
@@ -798,8 +808,10 @@ function AdminAppointments() {
                 )
               }
               className="
-                px-5
-                py-3
+                px-3
+                sm:px-5
+                py-2
+                sm:py-3
                 rounded-xl
                 border
                 border-gray-700
@@ -819,8 +831,10 @@ function AdminAppointments() {
             <button
               onClick={loadAppointments}
               className="
-                px-5
-                py-3
+                px-3
+                sm:px-5
+                py-2
+                sm:py-3
                 rounded-xl
                 border
                 border-gray-700
@@ -846,13 +860,16 @@ function AdminAppointments() {
       ========================================== */}
 
       <div className="
-        mb-8
+        mb-6
+        sm:mb-8
         bg-[#202020]
         border
         border-gray-800
         rounded-2xl
-        px-6
-        py-5
+        px-4
+        sm:px-6
+        py-4
+        sm:py-5
         flex
         flex-col
         md:flex-row
@@ -872,7 +889,8 @@ function AdminAppointments() {
 
 
           <h2 className="
-            text-xl
+            text-lg
+            sm:text-xl
             font-semibold
             mt-1
             capitalize
@@ -933,8 +951,11 @@ function AdminAppointments() {
         grid-cols-1
         sm:grid-cols-2
         xl:grid-cols-4
-        gap-5
-        mb-8
+        gap-3
+        sm:gap-5
+        mb-6
+        sm:mb-8
+        min-w-0
       ">
 
 
@@ -945,7 +966,8 @@ function AdminAppointments() {
           border
           border-gray-800
           rounded-2xl
-          p-6
+          p-4
+          sm:p-6
         ">
 
           <p className="
@@ -974,7 +996,8 @@ function AdminAppointments() {
           border
           border-gray-800
           rounded-2xl
-          p-6
+          p-4
+          sm:p-6
         ">
 
           <p className="
@@ -1003,7 +1026,8 @@ function AdminAppointments() {
           border
           border-gray-800
           rounded-2xl
-          p-6
+          p-4
+          sm:p-6
         ">
 
           <p className="
@@ -1032,7 +1056,8 @@ function AdminAppointments() {
           border
           border-gray-800
           rounded-2xl
-          p-6
+          p-4
+          sm:p-6
         ">
 
           <p className="
@@ -1066,14 +1091,17 @@ function AdminAppointments() {
         border-gray-800
         rounded-2xl
         overflow-hidden
+        min-w-0
       ">
 
 
         {/* CABECERA TABLA */}
 
         <div className="
-          px-6
-          py-5
+          px-4
+          sm:px-6
+          py-4
+          sm:py-5
           border-b
           border-gray-800
         ">
@@ -1139,7 +1167,8 @@ function AdminAppointments() {
         {filteredAppointments.length === 0 ? (
 
           <div className="
-            p-16
+            p-8
+            sm:p-16
             text-center
           ">
 
@@ -1707,7 +1736,8 @@ function AdminAppointments() {
               border-gray-700
               rounded-2xl
               shadow-2xl
-              p-6
+              p-4
+              sm:p-6
             ">
 
               <div className="
@@ -1897,7 +1927,9 @@ function AdminAppointments() {
 
               <div className="
                 flex
-                justify-end
+                flex-col-reverse
+                sm:flex-row
+                sm:justify-end
                 gap-3
                 mt-6
               ">
@@ -1906,8 +1938,11 @@ function AdminAppointments() {
                   onClick={closeDeleteModal}
                   disabled={deleting}
                   className="
-                    px-5
+                    px-4
+                    sm:px-5
                     py-3
+                    w-full
+                    sm:w-auto
                     rounded-xl
                     border
                     border-gray-700
@@ -1927,8 +1962,11 @@ function AdminAppointments() {
                   onClick={handleDelete}
                   disabled={deleting}
                   className="
-                    px-5
+                    px-4
+                    sm:px-5
                     py-3
+                    w-full
+                    sm:w-auto
                     rounded-xl
                     bg-red-600
                     text-white

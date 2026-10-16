@@ -24,11 +24,11 @@ function AboutSection() {
         </p>
 
         <Link
-          to="/services"
+          to="/contact"
           className="inline-block mt-10 bg-[#B8860B] hover:bg-[#DAA520] px-8 py-4 rounded-md text-white transition duration-300"
         >
 
-          Ver nuestros servicios
+          Ver nuestra ubicación
 
         </Link>
 

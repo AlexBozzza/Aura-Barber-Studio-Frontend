@@ -611,14 +611,14 @@ const formatDuration = (startTime, endTime) => {
 
   return (
 
-    <div className="space-y-8">
+    <div className="w-full min-w-0 space-y-6 sm:space-y-8">
 
 
       {/* ==========================================
           ENCABEZADO
       ========================================== */}
 
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 min-w-0">
 
         <div>
 
@@ -626,11 +626,11 @@ const formatDuration = (startTime, endTime) => {
             Administración
           </p>
 
-          <h1 className="text-3xl font-bold text-white mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white mt-1">
             Clientes
           </h1>
 
-          <p className="text-gray-400 mt-2">
+          <p className="text-sm sm:text-base text-gray-400 mt-2">
             Gestiona los clientes registrados en AuraBarberStudio.
           </p>
 
@@ -640,7 +640,7 @@ const formatDuration = (startTime, endTime) => {
         <button
           onClick={loadClients}
           disabled={loading}
-          className="px-5 py-3 rounded-xl border border-gray-700 bg-[#181818] text-gray-300 hover:bg-[#242424] hover:text-white transition disabled:opacity-50"
+          className="w-full sm:w-auto px-4 sm:px-5 py-3 rounded-xl border border-gray-700 bg-[#181818] text-gray-300 hover:bg-[#242424] hover:text-white transition disabled:opacity-50"
         >
           🔄 Actualizar
         </button>
@@ -652,12 +652,12 @@ const formatDuration = (startTime, endTime) => {
           ESTADÍSTICAS
       ========================================== */}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 min-w-0">
 
 
         {/* TOTAL */}
 
-        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-4 sm:p-6">
 
           <p className="text-gray-400">
             Total de clientes
@@ -672,7 +672,7 @@ const formatDuration = (startTime, endTime) => {
 
         {/* ACTIVOS */}
 
-        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-6">
+        <div className="bg-[#202020] border border-gray-700 rounded-2xl p-4 sm:p-6">
 
           <p className="text-gray-400">
             Clientes activos
@@ -697,9 +697,9 @@ const formatDuration = (startTime, endTime) => {
           BUSCADOR
       ========================================== */}
 
-      <div className="bg-[#202020] border border-gray-700 rounded-2xl p-5">
+      <div className="bg-[#202020] border border-gray-700 rounded-2xl p-4 sm:p-5 min-w-0">
 
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 min-w-0">
 
           <div>
 
@@ -714,7 +714,7 @@ const formatDuration = (startTime, endTime) => {
           </div>
 
 
-          <div className="relative w-full md:w-80">
+          <div className="relative w-full md:w-80 min-w-0">
 
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
               🔍
@@ -753,12 +753,12 @@ const formatDuration = (startTime, endTime) => {
           TABLA
       ========================================== */}
 
-      <div className="bg-[#202020] border border-gray-700 rounded-2xl overflow-hidden">
+      <div className="bg-[#202020] border border-gray-700 rounded-2xl overflow-hidden min-w-0">
 
 
         {/* CABECERA */}
 
-        <div className="grid grid-cols-12 gap-4 px-6 py-4 bg-[#181818] border-b border-gray-700 text-xs text-gray-500 uppercase tracking-wider">
+        <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 bg-[#181818] border-b border-gray-700 text-xs text-gray-500 uppercase tracking-wider">
 
           <div className="col-span-3">
             Cliente
@@ -768,15 +768,15 @@ const formatDuration = (startTime, endTime) => {
             Email
           </div>
 
-          <div className="col-span-2">
+          <div className="min-w-0 lg:col-span-2">
             Teléfono
           </div>
 
-          <div className="col-span-2">
+          <div className="min-w-0 lg:col-span-2">
             Registro
           </div>
 
-          <div className="col-span-2">
+          <div className="min-w-0 lg:col-span-2">
             Estado
           </div>
 
@@ -831,12 +831,12 @@ const formatDuration = (startTime, endTime) => {
                 onClick={() =>
                   openClientDetails(client)
                 }
-                className="grid grid-cols-12 gap-4 items-center px-6 py-5 border-b border-gray-700 last:border-b-0 hover:bg-[#242424] transition cursor-pointer"
+                className="grid grid-cols-1 gap-3 p-4 sm:p-5 border-b border-gray-700 last:border-b-0 hover:bg-[#242424] transition cursor-pointer lg:grid-cols-12 lg:gap-4 lg:items-center lg:px-6 lg:py-5"
               >
 
                 {/* CLIENTE */}
 
-                <div className="col-span-3 flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0 lg:col-span-3">
 
                   <div className="w-10 h-10 rounded-full bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] font-semibold">
 
@@ -862,28 +862,31 @@ const formatDuration = (startTime, endTime) => {
 
                 {/* EMAIL */}
 
-                <div className="col-span-3 text-gray-300 truncate">
+                <div className="min-w-0 text-gray-300 text-sm break-words lg:col-span-3 lg:truncate">
+                  <span className="text-xs text-gray-500 lg:hidden mr-2">Email:</span>
                   {client.email || "Sin correo"}
                 </div>
 
 
                 {/* TELÉFONO */}
 
-                <div className="col-span-2 text-gray-300">
+                <div className="min-w-0 text-gray-300 text-sm break-words lg:col-span-2">
+                  <span className="text-xs text-gray-500 lg:hidden mr-2">Teléfono:</span>
                   {client.phone || "Sin teléfono"}
                 </div>
 
 
                 {/* REGISTRO */}
 
-                <div className="col-span-2 text-gray-400 text-sm">
+                <div className="min-w-0 text-gray-400 text-sm lg:col-span-2">
+                  <span className="text-xs text-gray-500 lg:hidden mr-2">Registro:</span>
                   {formatDate(client.created_at)}
                 </div>
 
 
                 {/* ESTADO */}
 
-                <div className="col-span-2">
+                <div className="min-w-0 lg:col-span-2">
 
                   {client.is_active === 1 ? (
 
@@ -955,16 +958,16 @@ const formatDuration = (startTime, endTime) => {
           }}
         >
 
-          <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#202020] border border-gray-700 rounded-2xl shadow-2xl">
+          <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-[#202020] border border-gray-700 rounded-2xl shadow-2xl min-w-0">
 
 
             {/* HEADER */}
 
-            <div className="sticky top-0 z-10 bg-[#202020] border-b border-gray-800 px-6 py-5 flex items-center justify-between gap-4">
+            <div className="sticky top-0 z-10 bg-[#202020] border-b border-gray-800 px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-3 sm:gap-4">
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 min-w-0">
 
-                <div className="w-14 h-14 rounded-full bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xl font-bold">
+                <div className="w-11 h-11 sm:w-14 sm:h-14 rounded-full shrink-0 bg-[#B8860B]/20 border border-[#B8860B]/30 flex items-center justify-center text-[#B8860B] text-xl font-bold">
 
                   {getInitial(selectedClient)}
 
@@ -977,7 +980,7 @@ const formatDuration = (startTime, endTime) => {
                     Detalle del cliente
                   </p>
 
-                  <h2 className="text-xl font-bold text-white mt-1">
+                  <h2 className="text-base sm:text-xl font-bold text-white mt-1 break-words">
 
                     {selectedClient.first_name}{" "}
                     {selectedClient.last_name}
@@ -1002,7 +1005,7 @@ const formatDuration = (startTime, endTime) => {
 
             {/* CONTENIDO */}
 
-            <div className="p-6 space-y-6">
+            <div className="p-4 sm:p-6 space-y-5 sm:space-y-6">
 
 
               {/* ==========================================
@@ -1508,12 +1511,12 @@ const formatDuration = (startTime, endTime) => {
 
             {/* FOOTER */}
 
-            <div className="px-6 py-4 border-t border-gray-800 flex justify-end">
+            <div className="px-4 sm:px-6 py-4 border-t border-gray-800 flex justify-end">
 
               <button
                 type="button"
                 onClick={closeClientDetails}
-                className="px-5 py-3 rounded-xl bg-[#B8860B] text-black font-semibold hover:bg-[#d09b16] transition"
+                className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#B8860B] text-black font-semibold hover:bg-[#d09b16] transition"
               >
                 Cerrar
               </button>

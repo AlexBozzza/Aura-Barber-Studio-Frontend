@@ -160,11 +160,11 @@ function AdminPanel() {
 
                 <AdminSidebar />
 
-                <div className="ml-64">
+                <div className="ml-0 min-w-0 lg:ml-64">
 
                     <AdminHeader />
 
-                    <main className="p-8">
+                    <main className="min-w-0 p-4 sm:p-6 lg:p-8">
 
                         <div className="flex items-center justify-center min-h-[400px]">
 
@@ -199,11 +199,11 @@ function AdminPanel() {
 
                 <AdminSidebar />
 
-                <div className="ml-64">
+                <div className="ml-0 min-w-0 lg:ml-64">
 
                     <AdminHeader />
 
-                    <main className="p-8">
+                    <main className="min-w-0 p-4 sm:p-6 lg:p-8">
 
                         <div className="bg-[#202020] border border-red-500/20 rounded-2xl p-8 text-center">
 
@@ -240,11 +240,11 @@ function AdminPanel() {
 
             <AdminSidebar />
 
-            <div className="ml-64">
+            <div className="ml-0 min-w-0 lg:ml-64">
 
                 <AdminHeader />
 
-                <main className="p-8">
+                <main className="min-w-0 p-4 sm:p-6 lg:p-8">
 
                     {/* ==================================
                         ENCABEZADO
