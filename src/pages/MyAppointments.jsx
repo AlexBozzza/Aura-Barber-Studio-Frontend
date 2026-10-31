@@ -10,10 +10,14 @@ import {
   FaCalendarCheck,
   FaExclamationCircle,
   FaSyncAlt,
+  FaTimes,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-import { getMyAppointments } from "../services/appointmentService";
+import {
+  getMyAppointments,
+  cancelMyAppointment,
+} from "../services/appointmentService";
 
 
 function MyAppointments() {
@@ -31,6 +35,12 @@ function MyAppointments() {
   const [error, setError] = useState("");
 
   const [filter, setFilter] = useState("ALL");
+
+  // Estados para cancelar citas
+  const [appointmentToCancel, setAppointmentToCancel] = useState(null);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelMessage, setCancelMessage] = useState("");
+  const [cancelMessageType, setCancelMessageType] = useState("success");
 
 
   // ==========================================================
@@ -72,6 +82,47 @@ function MyAppointments() {
 
     }
 
+  };
+
+  // ==========================================================
+  // CANCELAR CITA DEL CLIENTE
+  // ==========================================================
+
+  const handleCancelAppointment = async () => {
+    if (!appointmentToCancel || cancelling) return;
+
+    try {
+      setCancelling(true);
+      setCancelMessage("");
+
+      const result = await cancelMyAppointment(appointmentToCancel.id);
+
+      setAppointments((previous) =>
+        previous.map((appointment) =>
+          String(appointment.id) === String(appointmentToCancel.id)
+            ? { ...appointment, status: "CANCELLED" }
+            : appointment
+        )
+      );
+
+      setCancelMessage(
+        result.message || "Tu cita fue cancelada correctamente."
+      );
+      setCancelMessageType("success");
+      setAppointmentToCancel(null);
+
+    } catch (err) {
+      console.error("Error cancelando cita:", err);
+
+      setCancelMessage(
+        err.response?.data?.message ||
+        "No se pudo cancelar la cita. Inténtalo nuevamente."
+      );
+      setCancelMessageType("error");
+
+    } finally {
+      setCancelling(false);
+    }
   };
 
 
@@ -856,6 +907,28 @@ function MyAppointments() {
 
             )}
 
+            {/* ACCIÓN: CANCELAR CITA */}
+            {isUpcoming(appointment) &&
+              ["PENDING", "CONFIRMED"].includes(appointment.status) && (
+                <div className="mt-5 pt-4 border-t border-gray-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCancelMessage("");
+                      setAppointmentToCancel(appointment);
+                    }}
+                    className="
+                      inline-flex items-center gap-2
+                      text-sm font-semibold text-red-400
+                      hover:text-red-300 transition
+                    "
+                  >
+                    <FaTimes />
+                    Cancelar cita
+                  </button>
+                </div>
+              )}
+
           </div>
 
         </div>
@@ -1162,6 +1235,22 @@ function MyAppointments() {
 
         </div>
 
+        {/* MENSAJE DE RESULTADO DE CANCELACIÓN */}
+        {cancelMessage && (
+          <div
+            role="status"
+            className={`
+              mb-6 p-4 rounded-xl border text-sm
+              ${
+                cancelMessageType === "success"
+                  ? "bg-green-500/10 border-green-500/30 text-green-300"
+                  : "bg-red-500/10 border-red-500/30 text-red-300"
+              }
+            `}
+          >
+            {cancelMessage}
+          </div>
+        )}
 
         {/* ====================================================
             PRÓXIMA CITA
@@ -1406,6 +1495,26 @@ function MyAppointments() {
                     nextAppointment.status
                   )}
                 </span>
+
+                {["PENDING", "CONFIRMED"].includes(nextAppointment.status) && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCancelMessage("");
+                      setAppointmentToCancel(nextAppointment);
+                    }}
+                    className="
+                      inline-flex items-center justify-center gap-2
+                      px-5 py-3 rounded-xl border
+                      border-red-500/30 text-red-400
+                      hover:bg-red-500/10 hover:border-red-500/60
+                      transition
+                    "
+                  >
+                    <FaTimes />
+                    Cancelar cita
+                  </button>
+                )}
 
               </div>
 
@@ -1742,6 +1851,100 @@ function MyAppointments() {
         </section>
 
       </main>
+
+      {/* MODAL DE CONFIRMACIÓN DE CANCELACIÓN */}
+      {appointmentToCancel && (
+        <div
+          className="
+            fixed inset-0 z-50 bg-black/80 backdrop-blur-sm
+            flex items-center justify-center p-4
+          "
+          onClick={(event) => {
+            if (event.target === event.currentTarget && !cancelling) {
+              setAppointmentToCancel(null);
+            }
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="cancel-appointment-title"
+            className="
+              w-full max-w-md bg-[#202020]
+              border border-gray-700 rounded-2xl
+              p-6 shadow-2xl
+            "
+          >
+            <div className="
+              w-14 h-14 rounded-full bg-red-500/10
+              flex items-center justify-center mx-auto mb-5
+            ">
+              <FaExclamationCircle className="text-red-400 text-2xl" />
+            </div>
+
+            <h2
+              id="cancel-appointment-title"
+              className="text-xl font-bold text-white text-center"
+            >
+              ¿Cancelar tu cita?
+            </h2>
+
+            <p className="text-gray-400 text-sm text-center mt-3">
+              ¿Estás seguro de que deseas cancelar tu reserva de{" "}
+              <span className="text-white font-semibold">
+                {appointmentToCancel.service_name || "este servicio"}
+              </span>
+              ?
+            </p>
+
+            <div className="
+              bg-[#181818] rounded-xl p-4 mt-5
+              space-y-2 text-sm
+            ">
+              <p className="text-gray-300">
+                <span className="text-gray-500">Fecha:</span>{" "}
+                {formatDate(appointmentToCancel)}
+              </p>
+              <p className="text-gray-300">
+                <span className="text-gray-500">Hora:</span>{" "}
+                {formatTime(appointmentToCancel.start_time)}
+              </p>
+            </div>
+
+            <p className="text-xs text-gray-500 text-center mt-4">
+              Esta acción cancelará tu reserva y liberará el horario.
+            </p>
+
+            <div className="flex gap-3 mt-6">
+              <button
+                type="button"
+                disabled={cancelling}
+                onClick={() => setAppointmentToCancel(null)}
+                className="
+                  flex-1 py-3 rounded-xl border border-gray-700
+                  text-gray-300 hover:bg-gray-800 transition
+                  disabled:opacity-50
+                "
+              >
+                Volver
+              </button>
+
+              <button
+                type="button"
+                disabled={cancelling}
+                onClick={handleCancelAppointment}
+                className="
+                  flex-1 py-3 rounded-xl bg-red-600
+                  hover:bg-red-700 text-white font-semibold
+                  transition disabled:opacity-50
+                "
+              >
+                {cancelling ? "Cancelando..." : "Sí, cancelar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
 
