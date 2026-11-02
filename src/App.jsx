@@ -1,3 +1,4 @@
+
 import { Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
@@ -19,120 +20,126 @@ import AdminSidebar from "./components/admin/AdminSidebar";
 import AdminHeader from "./components/admin/AdminHeader";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import { Analytics } from "@vercel/analytics/react";
 
 function App() {
   return (
-    <Routes>
-      {/* PÁGINAS PÚBLICAS */}
-      <Route path="/" element={<Home />} />
-      <Route path="/contact" element={<Contact />} />
-      <Route path="/services" element={<Services />} />
-      <Route path="/appointments" element={<Appointments />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+    <>
+      <Routes>
+        {/* PÁGINAS PÚBLICAS */}
+        <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/appointments" element={<Appointments />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
 
-      {/* PERFIL DEL USUARIO */}
-      <Route
-        path="/profile"
-        element={
-          <ProtectedRoute>
-            <Profile />
-          </ProtectedRoute>
-        }
-      />
+        {/* PERFIL DEL USUARIO */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* MIS CITAS */}
-      <Route
-        path="/my-appointments"
-        element={
-          <ProtectedRoute>
-            <MyAppointments />
-          </ProtectedRoute>
-        }
-      />
+        {/* MIS CITAS */}
+        <Route
+          path="/my-appointments"
+          element={
+            <ProtectedRoute>
+              <MyAppointments />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* DASHBOARD ADMINISTRATIVO */}
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute role="BARBER">
-            <AdminPanel />
-          </ProtectedRoute>
-        }
-      />
+        {/* DASHBOARD ADMINISTRATIVO */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute role="BARBER">
+              <AdminPanel />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* CITAS ADMINISTRATIVAS */}
-      <Route
-        path="/admin/appointments"
-        element={
-          <ProtectedRoute role="BARBER">
-            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
-              <AdminSidebar />
-              <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
-                <AdminHeader />
-                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
-                  <AdminAppointments />
-                </main>
+        {/* CITAS ADMINISTRATIVAS */}
+        <Route
+          path="/admin/appointments"
+          element={
+            <ProtectedRoute role="BARBER">
+              <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
+                <AdminSidebar />
+                <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
+                  <AdminHeader />
+                  <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
+                    <AdminAppointments />
+                  </main>
+                </div>
               </div>
-            </div>
-          </ProtectedRoute>
-        }
-      />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* CLIENTES ADMINISTRATIVOS */}
-      <Route
-        path="/admin/clients"
-        element={
-          <ProtectedRoute role="BARBER">
-            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
-              <AdminSidebar />
-              <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
-                <AdminHeader />
-                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
-                  <AdminClients />
-                </main>
+        {/* CLIENTES ADMINISTRATIVOS */}
+        <Route
+          path="/admin/clients"
+          element={
+            <ProtectedRoute role="BARBER">
+              <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
+                <AdminSidebar />
+                <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
+                  <AdminHeader />
+                  <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
+                    <AdminClients />
+                  </main>
+                </div>
               </div>
-            </div>
-          </ProtectedRoute>
-        }
-      />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* SERVICIOS ADMINISTRATIVOS */}
-      <Route
-        path="/admin/services"
-        element={
-          <ProtectedRoute role="BARBER">
-            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
-              <AdminSidebar />
-              <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
-                <AdminHeader />
-                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
-                  <AdminServices />
-                </main>
+        {/* SERVICIOS ADMINISTRATIVOS */}
+        <Route
+          path="/admin/services"
+          element={
+            <ProtectedRoute role="BARBER">
+              <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
+                <AdminSidebar />
+                <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
+                  <AdminHeader />
+                  <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
+                    <AdminServices />
+                  </main>
+                </div>
               </div>
-            </div>
-          </ProtectedRoute>
-        }
-      />
+            </ProtectedRoute>
+          }
+        />
 
-      {/* PERFIL ADMINISTRATIVO */}
-      <Route
-        path="/admin/profile"
-        element={
-          <ProtectedRoute role="BARBER">
-            <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
-              <AdminSidebar />
-              <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
-                <AdminHeader />
-                <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
-                  <AdminProfile />
-                </main>
+        {/* PERFIL ADMINISTRATIVO */}
+        <Route
+          path="/admin/profile"
+          element={
+            <ProtectedRoute role="BARBER">
+              <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
+                <AdminSidebar />
+                <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
+                  <AdminHeader />
+                  <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
+                    <AdminProfile />
+                  </main>
+                </div>
               </div>
-            </div>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+
+      {/* VERCEL ANALYTICS */}
+      <Analytics />
+    </>
   );
 }
 
