@@ -83,6 +83,20 @@ export const cancelMyAppointment = async (appointmentId) => {
 };
 
 // ==========================================
+// REAGENDAR MI CITA
+// Usuario autenticado
+// ==========================================
+
+export const rescheduleMyAppointment = async (appointmentId) => {
+  const response = await api.patch(
+    `/appointments/${appointmentId}/reschedule`,
+    {}
+  );
+
+  return response.data;
+};
+
+// ==========================================
 // ACTUALIZAR ESTADO DE UNA CITA
 // ==========================================
 

@@ -530,61 +530,65 @@ function AdminAppointments() {
   };
 
 
-  // ==========================================
-  // ESTADO
-  // ==========================================
+// ==========================================
+// ESTADO
+// ==========================================
 
-  const getStatusStyle = (status) => {
+const getStatusStyle = (status) => {
 
-    switch (status) {
+  switch (status) {
 
-      case "PENDING":
+    case "PENDING":
+      return `
+        bg-yellow-500/10
+        text-yellow-400
+        border-yellow-500/30
+      `;
 
-        return `
-          bg-yellow-500/10
-          text-yellow-400
-          border-yellow-500/30
-        `;
+    case "CONFIRMED":
+      return `
+        bg-green-500/10
+        text-green-400
+        border-green-500/30
+      `;
 
+    case "COMPLETED":
+      return `
+        bg-blue-500/10
+        text-blue-400
+        border-blue-500/30
+      `;
 
-      case "CONFIRMED":
+    case "CANCELLED":
+      return `
+        bg-red-500/10
+        text-red-400
+        border-red-500/30
+      `;
 
-        return `
-          bg-green-500/10
-          text-green-400
-          border-green-500/30
-        `;
+    case "RESCHEDULED":
+      return `
+        bg-purple-500/10
+        text-purple-400
+        border-purple-500/30
+      `;
 
+    case "NO_SHOW":
+      return `
+        bg-gray-500/10
+        text-gray-400
+        border-gray-500/30
+      `;
 
-      case "COMPLETED":
+    default:
+      return `
+        bg-gray-500/10
+        text-gray-400
+        border-gray-500/30
+      `;
 
-        return `
-          bg-blue-500/10
-          text-blue-400
-          border-blue-500/30
-        `;
-
-
-      case "CANCELLED":
-
-        return `
-          bg-red-500/10
-          text-red-400
-          border-red-500/30
-        `;
-
-
-      default:
-
-        return `
-          bg-gray-500/10
-          text-gray-400
-          border-gray-500/30
-        `;
-
-    }
-
-  };
+  }
+};
 
 
   // ==========================================
@@ -1659,6 +1663,16 @@ function AdminAppointments() {
                           >
                             Cancelada
                           </option>
+
+                           <option
+                            value="RESCHEDULED"
+                            className="
+                              bg-[#202020]
+                              text-purple-400
+                            "
+                          >
+                            Reagendada
+                          </option>                         
 
                         </select>
 

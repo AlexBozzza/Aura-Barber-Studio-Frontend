@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import {
   getMyAppointments,
   cancelMyAppointment,
+  rescheduleMyAppointment,
 } from "../services/appointmentService";
 
 
@@ -42,6 +43,9 @@ function MyAppointments() {
   const [cancelMessage, setCancelMessage] = useState("");
   const [cancelMessageType, setCancelMessageType] = useState("success");
 
+  // Estados para reagendar citas
+  const [appointmentToReschedule, setAppointmentToReschedule] = useState(null);
+  const [rescheduling, setRescheduling] = useState(false);
 
   // ==========================================================
   // OBTENER MIS CITAS
@@ -125,6 +129,47 @@ function MyAppointments() {
     }
   };
 
+  // ==========================================================
+// REAGENDAR CITA DEL CLIENTE
+// ==========================================================
+
+const handleRescheduleAppointment = async () => {
+  if (!appointmentToReschedule || rescheduling) return;
+
+  try {
+    setRescheduling(true);
+    setCancelMessage("");
+
+    const result = await rescheduleMyAppointment(
+      appointmentToReschedule.id
+    );
+
+    setAppointments((previous) =>
+      previous.map((appointment) =>
+        String(appointment.id) === String(appointmentToReschedule.id)
+          ? { ...appointment, status: "RESCHEDULED" }
+          : appointment
+      )
+    );
+
+    setAppointmentToReschedule(null);
+
+    navigate("/appointments");
+
+  } catch (err) {
+    console.error("Error reagendando cita:", err);
+
+    setCancelMessage(
+      err.response?.data?.message ||
+      "No se pudo iniciar el reagendamiento. Inténtalo nuevamente."
+    );
+
+    setCancelMessageType("error");
+
+  } finally {
+    setRescheduling(false);
+  }
+};
 
   // ==========================================================
   // CARGAR AL ENTRAR
@@ -353,6 +398,8 @@ function MyAppointments() {
       CANCELLED:
         "Cancelada",
 
+        RESCHEDULED: "Reagendada",
+
     };
 
     return (
@@ -383,6 +430,9 @@ function MyAppointments() {
 
       CANCELLED:
         "bg-red-500/10 text-red-400 border-red-500/20",
+
+      RESCHEDULED:
+        "bg-purple-500/10 text-purple-400 border-purple-500/20",
 
     };
 
@@ -456,6 +506,12 @@ function MyAppointments() {
           ) {
             return false;
           }
+          if (
+            appointment.status ===
+            "RESCHEDULED"
+          ) {
+            return false;
+          }
 
           return isUpcoming(
             appointment
@@ -491,7 +547,9 @@ function MyAppointments() {
             appointment.status ===
               "COMPLETED" ||
             appointment.status ===
-              "CANCELLED"
+              "CANCELLED" ||
+            appointment.status === 
+              "RESCHEDULED"
         )
         .sort(
           (a, b) => {
@@ -548,6 +606,7 @@ function MyAppointments() {
     ]);
 
 
+
   // ==========================================================
   // TARJETA DE CITA
   // ==========================================================
@@ -558,9 +617,7 @@ function MyAppointments() {
   }) => {
 
     const shortDate =
-      formatShortDate(
-        appointment
-      );
+      formatShortDate(appointment);
 
     return (
 
@@ -580,10 +637,7 @@ function MyAppointments() {
           md:flex-row
         ">
 
-
-          {/* ================================================
-              FECHA
-          ================================================= */}
+          {/* FECHA */}
 
           <div className="
             md:w-28
@@ -621,10 +675,7 @@ function MyAppointments() {
 
           </div>
 
-
-          {/* ================================================
-              INFORMACIÓN
-          ================================================= */}
+          {/* INFORMACIÓN */}
 
           <div className="flex-1 p-5 md:p-6">
 
@@ -636,7 +687,6 @@ function MyAppointments() {
               lg:justify-between
               gap-4
             ">
-
 
               {/* SERVICIO */}
 
@@ -663,7 +713,6 @@ function MyAppointments() {
 
               </div>
 
-
               {/* ESTADO */}
 
               <span
@@ -677,22 +726,15 @@ function MyAppointments() {
                   border
                   text-xs
                   font-semibold
-                  ${getStatusClasses(
-                    appointment.status
-                  )}
+                  ${getStatusClasses(appointment.status)}
                 `}
               >
-                {getStatusLabel(
-                  appointment.status
-                )}
+                {getStatusLabel(appointment.status)}
               </span>
 
             </div>
 
-
-            {/* ==============================================
-                DATOS
-            ============================================== */}
+            {/* DATOS */}
 
             <div className="
               grid
@@ -706,150 +748,83 @@ function MyAppointments() {
               border-gray-800
             ">
 
-
               {/* FECHA */}
 
-              <div className="
-                flex
-                items-start
-                gap-3
-              ">
+              <div className="flex items-start gap-3">
 
-                <FaCalendarAlt className="
-                  mt-1
-                  text-[#B8860B]
-                " />
+                <FaCalendarAlt className="mt-1 text-[#B8860B]" />
 
                 <div>
 
-                  <p className="
-                    text-xs
-                    text-gray-500
-                  ">
+                  <p className="text-xs text-gray-500">
                     Fecha
                   </p>
 
-                  <p className="
-                    text-sm
-                    text-gray-300
-                    capitalize
-                  ">
-                    {formatDate(
-                      appointment
-                    )}
+                  <p className="text-sm text-gray-300 capitalize">
+                    {formatDate(appointment)}
                   </p>
 
                 </div>
 
               </div>
-
 
               {/* HORA */}
 
-              <div className="
-                flex
-                items-start
-                gap-3
-              ">
+              <div className="flex items-start gap-3">
 
-                <FaClock className="
-                  mt-1
-                  text-[#B8860B]
-                " />
+                <FaClock className="mt-1 text-[#B8860B]" />
 
                 <div>
 
-                  <p className="
-                    text-xs
-                    text-gray-500
-                  ">
+                  <p className="text-xs text-gray-500">
                     Horario
                   </p>
 
-                  <p className="
-                    text-sm
-                    text-gray-300
-                  ">
-                    {formatTime(
-                      appointment.start_time
-                    )}
+                  <p className="text-sm text-gray-300">
+                    {formatTime(appointment.start_time)}
                     {" — "}
-                    {formatTime(
-                      appointment.end_time
-                    )}
+                    {formatTime(appointment.end_time)}
                   </p>
 
                 </div>
 
               </div>
-
 
               {/* BARBERO */}
 
-              <div className="
-                flex
-                items-start
-                gap-3
-              ">
+              <div className="flex items-start gap-3">
 
-                <FaUserTie className="
-                  mt-1
-                  text-[#B8860B]
-                " />
+                <FaUserTie className="mt-1 text-[#B8860B]" />
 
                 <div>
 
-                  <p className="
-                    text-xs
-                    text-gray-500
-                  ">
+                  <p className="text-xs text-gray-500">
                     Barbero
                   </p>
 
-                  <p className="
-                    text-sm
-                    text-gray-300
-                  ">
-                    {appointment.barber_first_name ||
-                      "No disponible"}
-
+                  <p className="text-sm text-gray-300">
+                    {appointment.barber_first_name || "No disponible"}
                     {" "}
-
-                    {appointment.barber_last_name ||
-                      ""}
+                    {appointment.barber_last_name || ""}
                   </p>
 
                 </div>
 
               </div>
 
-
               {/* DURACIÓN */}
 
-              <div className="
-                flex
-                items-start
-                gap-3
-              ">
+              <div className="flex items-start gap-3">
 
-                <FaCut className="
-                  mt-1
-                  text-[#B8860B]
-                " />
+                <FaCut className="mt-1 text-[#B8860B]" />
 
                 <div>
 
-                  <p className="
-                    text-xs
-                    text-gray-500
-                  ">
+                  <p className="text-xs text-gray-500">
                     Duración
                   </p>
 
-                  <p className="
-                    text-sm
-                    text-gray-300
-                  ">
+                  <p className="text-sm text-gray-300">
                     {appointment.service_duration
                       ? `${appointment.service_duration} min`
                       : "No disponible"}
@@ -861,10 +836,7 @@ function MyAppointments() {
 
             </div>
 
-
-            {/* ==============================================
-                NOTAS
-            ============================================== */}
+            {/* NOTAS */}
 
             {appointment.notes && (
 
@@ -886,18 +858,11 @@ function MyAppointments() {
 
                 <div>
 
-                  <p className="
-                    text-xs
-                    text-gray-500
-                    mb-1
-                  ">
+                  <p className="text-xs text-gray-500 mb-1">
                     Notas de la cita
                   </p>
 
-                  <p className="
-                    text-sm
-                    text-gray-400
-                  ">
+                  <p className="text-sm text-gray-400">
                     {appointment.notes}
                   </p>
 
@@ -907,10 +872,47 @@ function MyAppointments() {
 
             )}
 
-            {/* ACCIÓN: CANCELAR CITA */}
+            {/* ACCIONES: REAGENDAR Y CANCELAR */}
+
             {isUpcoming(appointment) &&
               ["PENDING", "CONFIRMED"].includes(appointment.status) && (
-                <div className="mt-5 pt-4 border-t border-gray-800">
+
+                <div className="
+                  mt-5
+                  pt-4
+                  border-t
+                  border-gray-800
+                  flex
+                  flex-wrap
+                  items-center
+                  gap-5
+                ">
+
+                  {/* REAGENDAR */}
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCancelMessage("");
+                      setAppointmentToReschedule(appointment);
+                    }}
+                    className="
+                      inline-flex
+                      items-center
+                      gap-2
+                      text-sm
+                      font-semibold
+                      text-[#B8860B]
+                      hover:text-yellow-400
+                      transition
+                    "
+                  >
+                    <FaSyncAlt />
+                    Reagendar cita
+                  </button>
+
+                  {/* CANCELAR */}
+
                   <button
                     type="button"
                     onClick={() => {
@@ -918,15 +920,22 @@ function MyAppointments() {
                       setAppointmentToCancel(appointment);
                     }}
                     className="
-                      inline-flex items-center gap-2
-                      text-sm font-semibold text-red-400
-                      hover:text-red-300 transition
+                      inline-flex
+                      items-center
+                      gap-2
+                      text-sm
+                      font-semibold
+                      text-red-400
+                      hover:text-red-300
+                      transition
                     "
                   >
                     <FaTimes />
                     Cancelar cita
                   </button>
+
                 </div>
+
               )}
 
           </div>
@@ -938,6 +947,7 @@ function MyAppointments() {
     );
 
   };
+
 
 
   // ==========================================================
@@ -1472,49 +1482,100 @@ function MyAppointments() {
                 </div>
 
 
-                {/* ESTADO */}
+               {/* ESTADO */}
 
-                <span
-                  className={`
-                    self-start
-                    lg:self-center
-                    inline-flex
-                    items-center
-                    px-4
-                    py-2
-                    rounded-full
-                    border
-                    text-sm
-                    font-semibold
-                    ${getStatusClasses(
-                      nextAppointment.status
-                    )}
-                  `}
-                >
-                  {getStatusLabel(
-                    nextAppointment.status
-                  )}
-                </span>
+<span
+  className={`
+    self-start
+    lg:self-center
+    inline-flex
+    items-center
+    px-4
+    py-2
+    rounded-full
+    border
+    text-sm
+    font-semibold
+    ${getStatusClasses(
+      nextAppointment.status
+    )}
+  `}
+>
+  {getStatusLabel(
+    nextAppointment.status
+  )}
+</span>
 
-                {["PENDING", "CONFIRMED"].includes(nextAppointment.status) && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCancelMessage("");
-                      setAppointmentToCancel(nextAppointment);
-                    }}
-                    className="
-                      inline-flex items-center justify-center gap-2
-                      px-5 py-3 rounded-xl border
-                      border-red-500/30 text-red-400
-                      hover:bg-red-500/10 hover:border-red-500/60
-                      transition
-                    "
-                  >
-                    <FaTimes />
-                    Cancelar cita
-                  </button>
-                )}
+{/* ACCIONES: REAGENDAR Y CANCELAR */}
+
+{["PENDING", "CONFIRMED"].includes(nextAppointment.status) && (
+
+  <div className="
+    flex
+    flex-wrap
+    items-center
+    gap-3
+  ">
+
+    {/* REAGENDAR */}
+
+    <button
+      type="button"
+      onClick={() => {
+        setCancelMessage("");
+        setAppointmentToReschedule(nextAppointment);
+      }}
+      className="
+        inline-flex
+        items-center
+        justify-center
+        gap-2
+        px-5
+        py-3
+        rounded-xl
+        border
+        border-[#B8860B]/40
+        text-[#B8860B]
+        hover:bg-[#B8860B]/10
+        hover:border-[#B8860B]
+        transition
+      "
+    >
+      <FaSyncAlt />
+      Reagendar cita
+    </button>
+
+    {/* CANCELAR */}
+
+    <button
+      type="button"
+      onClick={() => {
+        setCancelMessage("");
+        setAppointmentToCancel(nextAppointment);
+      }}
+      className="
+        inline-flex
+        items-center
+        justify-center
+        gap-2
+        px-5
+        py-3
+        rounded-xl
+        border
+        border-red-500/30
+        text-red-400
+        hover:bg-red-500/10
+        hover:border-red-500/60
+        transition
+      "
+    >
+      <FaTimes />
+      Cancelar cita
+    </button>
+
+  </div>
+
+)}
 
               </div>
 
@@ -1852,7 +1913,11 @@ function MyAppointments() {
 
       </main>
 
-      {/* MODAL DE CONFIRMACIÓN DE CANCELACIÓN */}
+ 
+      {/* ====================================================
+          MODAL DE CONFIRMACIÓN DE CANCELACIÓN
+      ==================================================== */}
+
       {appointmentToCancel && (
         <div
           className="
@@ -1905,6 +1970,7 @@ function MyAppointments() {
                 <span className="text-gray-500">Fecha:</span>{" "}
                 {formatDate(appointmentToCancel)}
               </p>
+
               <p className="text-gray-300">
                 <span className="text-gray-500">Hora:</span>{" "}
                 {formatTime(appointmentToCancel.start_time)}
@@ -1916,6 +1982,7 @@ function MyAppointments() {
             </p>
 
             <div className="flex gap-3 mt-6">
+
               <button
                 type="button"
                 disabled={cancelling}
@@ -1941,7 +2008,111 @@ function MyAppointments() {
               >
                 {cancelling ? "Cancelando..." : "Sí, cancelar"}
               </button>
+
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ====================================================
+          MODAL DE CONFIRMACIÓN DE REAGENDAMIENTO
+      ==================================================== */}
+
+      {appointmentToReschedule && (
+        <div
+          className="
+            fixed inset-0 z-50 bg-black/80 backdrop-blur-sm
+            flex items-center justify-center p-4
+          "
+          onClick={(event) => {
+            if (event.target === event.currentTarget && !rescheduling) {
+              setAppointmentToReschedule(null);
+            }
+          }}
+        >
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reschedule-appointment-title"
+            className="
+              w-full max-w-md bg-[#202020]
+              border border-gray-700 rounded-2xl
+              p-6 shadow-2xl
+            "
+          >
+
+            <div className="
+              w-14 h-14 rounded-full bg-[#B8860B]/10
+              flex items-center justify-center mx-auto mb-5
+            ">
+              <FaSyncAlt className="text-[#B8860B] text-2xl" />
+            </div>
+
+            <h2
+              id="reschedule-appointment-title"
+              className="text-xl font-bold text-white text-center"
+            >
+              ¿Reagendar tu cita?
+            </h2>
+
+            <p className="text-gray-400 text-sm text-center mt-3">
+              Tu reserva actual de{" "}
+              <span className="text-white font-semibold">
+                {appointmentToReschedule.service_name || "este servicio"}
+              </span>{" "}
+              se marcará como reagendada.
+            </p>
+
+            <div className="
+              bg-[#181818] rounded-xl p-4 mt-5
+              space-y-2 text-sm
+            ">
+              <p className="text-gray-300">
+                <span className="text-gray-500">Fecha:</span>{" "}
+                {formatDate(appointmentToReschedule)}
+              </p>
+
+              <p className="text-gray-300">
+                <span className="text-gray-500">Hora:</span>{" "}
+                {formatTime(appointmentToReschedule.start_time)}
+              </p>
+            </div>
+
+            <p className="text-xs text-gray-500 text-center mt-4">
+              Se liberará el horario actual y podrás seleccionar
+              una nueva fecha y hora.
+            </p>
+
+            <div className="flex gap-3 mt-6">
+
+              <button
+                type="button"
+                disabled={rescheduling}
+                onClick={() => setAppointmentToReschedule(null)}
+                className="
+                  flex-1 py-3 rounded-xl border border-gray-700
+                  text-gray-300 hover:bg-gray-800 transition
+                  disabled:opacity-50
+                "
+              >
+                Volver
+              </button>
+
+              <button
+                type="button"
+                disabled={rescheduling}
+                onClick={handleRescheduleAppointment}
+                className="
+                  flex-1 py-3 rounded-xl bg-[#B8860B]
+                  hover:bg-[#9f7408] text-white font-semibold
+                  transition disabled:opacity-50
+                "
+              >
+                {rescheduling ? "Reagendando..." : "Sí, reagendar"}
+              </button>
+
+            </div>
+
           </div>
         </div>
       )}
@@ -1951,6 +2122,5 @@ function MyAppointments() {
   );
 
 }
-
 
 export default MyAppointments;

@@ -101,51 +101,61 @@ function AdminPanel() {
     };
 
 
-    // ==========================================
-    // ESTADO DE CITA
-    // ==========================================
+// ==========================================
+// ESTADO DE CITA
+// ==========================================
 
-    const getStatusLabel = (status) => {
+const getStatusLabel = (status) => {
 
-        const statuses = {
+    const statuses = {
 
-            PENDING: "Pendiente",
+        PENDING: "Pendiente",
 
-            CONFIRMED: "Confirmada",
+        CONFIRMED: "Confirmada",
 
-            COMPLETED: "Completada",
+        COMPLETED: "Completada",
 
-            CANCELLED: "Cancelada"
+        CANCELLED: "Cancelada",
 
-        };
+        NO_SHOW: "No asistió",
 
-        return statuses[status] || status;
+        RESCHEDULED: "Reagendada"
+
+    };
+
+    return statuses[status] || status;
+
+};
+
+
+const getStatusClasses = (status) => {
+
+    const classes = {
+
+        PENDING:
+            "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+
+        CONFIRMED:
+            "bg-blue-500/10 text-blue-400 border-blue-500/20",
+
+        COMPLETED:
+            "bg-green-500/10 text-green-400 border-green-500/20",
+
+        CANCELLED:
+            "bg-red-500/10 text-red-400 border-red-500/20",
+
+        NO_SHOW:
+            "bg-gray-500/10 text-gray-400 border-gray-500/20",
+
+        RESCHEDULED:
+            "bg-purple-500/10 text-purple-400 border-purple-500/20"
 
     };
 
+    return classes[status] ||
+        "bg-gray-500/10 text-gray-400 border-gray-500/20";
 
-    const getStatusClasses = (status) => {
-
-        const classes = {
-
-            PENDING:
-                "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-
-            CONFIRMED:
-                "bg-blue-500/10 text-blue-400 border-blue-500/20",
-
-            COMPLETED:
-                "bg-green-500/10 text-green-400 border-green-500/20",
-
-            CANCELLED:
-                "bg-red-500/10 text-red-400 border-red-500/20"
-
-        };
-
-        return classes[status] ||
-            "bg-gray-500/10 text-gray-400 border-gray-500/20";
-
-    };
+};
 
 
     // ==========================================
