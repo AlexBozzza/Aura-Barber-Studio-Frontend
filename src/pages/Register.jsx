@@ -22,6 +22,9 @@ function Register() {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [registrationComplete, setRegistrationComplete] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+
 
   // ==========================================
   // CAMBIAR INPUT
@@ -111,27 +114,20 @@ function Register() {
       setLoading(true);
 
 
-      await register(
-        formData.first_name,
-        formData.last_name,
-        formData.email,
-        formData.phone,
-        formData.password
-      );
+const response = await register(
+  formData.first_name,
+  formData.last_name,
+  formData.email,
+  formData.phone,
+  formData.password
+);
 
+setEmailSent(response.emailSent === true);
+setRegistrationComplete(true);
 
-      setSuccess(
-        "Cuenta creada correctamente. Redirigiendo al login..."
-      );
-
-
-      // Esperar un momento para mostrar el mensaje
-
-      setTimeout(() => {
-
-        navigate("/login");
-
-      }, 1500);
+setSuccess(
+  response.message || "Tu cuenta fue creada. Revisa tu correo electrónico para verificarla."
+);
 
 
     } catch (error) {
@@ -186,12 +182,14 @@ function Register() {
           </Link>
 
           <h1 className="text-4xl font-bold text-white mt-8">
-            Crear una cuenta
-          </h1>
+         {registrationComplete ? "Verifica tu correo" : "Crear una cuenta"}
+        </h1>
 
-          <p className="text-gray-400 mt-3">
-            Regístrate para poder reservar tus citas.
-          </p>
+        <p className="text-gray-400 mt-3">
+       {registrationComplete
+        ? "Un último paso para activar tu cuenta."
+        : "Regístrate para poder reservar tus citas."}
+      </p>
 
         </div>
 
@@ -202,6 +200,7 @@ function Register() {
 
         <div className="bg-[#202020] border border-gray-700 rounded-2xl p-8 shadow-xl">
 
+          {!registrationComplete && (
 
           <form
             onSubmit={handleSubmit}
@@ -394,7 +393,7 @@ function Register() {
                   }
                 >
 
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? "👁️" : "👁️"}
 
                 </button>
 
@@ -548,6 +547,57 @@ function Register() {
 
 
           </form>
+          
+
+ )}
+
+{registrationComplete && (
+
+  <div className="text-center space-y-5">
+
+    <div className="text-5xl">
+      📧
+    </div>
+
+    <h2 className="text-2xl font-bold text-white">
+     ¡Ya casi está todo listo!
+    </h2>
+
+    {emailSent ? (
+
+      <p className="text-gray-300">
+      Hemos enviado un enlace de verificación a:
+     <br />
+      <span className="text-[#DAA520] font-semibold">
+      {formData.email}
+     </span>
+     <br /><br />
+     Revisa tu bandeja de entrada y también la carpeta de spam.
+     Haz clic en el enlace que recibiste para activar tu cuenta.
+     <br /><br />
+     Necesitas verificar tu correo antes de iniciar sesión.
+    </p>
+
+    ) : (
+
+      <p className="text-red-400">
+        Tu cuenta fue creada, pero no pudimos enviar el correo de verificación.
+        Podrás solicitar que se envíe nuevamente.
+      </p>
+
+    )}
+
+    <button
+      type="button"
+      onClick={() => navigate(`/verify-email?email=${encodeURIComponent(formData.email)}`)}
+     className="w-full py-4 rounded-xl bg-[#B8860B] hover:bg-[#DAA520] transition-all duration-300 text-white font-bold text-lg"
+    >
+     {emailSent ? "Continuar" : "Solicitar verificación"}
+    </button>
+
+     </div>
+
+    )}
 
 
           {/* LOGIN */}

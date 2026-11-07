@@ -7,6 +7,7 @@ import Services from "./pages/Services";
 import Appointments from "./pages/Appointments";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
 import AdminPanel from "./pages/AdminPanel";
 import Profile from "./pages/Profile";
 import MyAppointments from "./pages/MyAppointments";
@@ -33,6 +34,7 @@ function App() {
         <Route path="/appointments" element={<Appointments />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
 
         {/* PERFIL DEL USUARIO */}
         <Route

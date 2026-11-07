@@ -1,3 +1,4 @@
+
 import api from "./api";
 
 // ==========================================
@@ -5,7 +6,6 @@ import api from "./api";
 // ==========================================
 
 export const login = async (email, password) => {
-
   const response = await api.post(
     "/auth/login",
     {
@@ -16,7 +16,6 @@ export const login = async (email, password) => {
 
   const { user, token, expiresIn } = response.data.data;
 
-  // Guardar sesión
   localStorage.setItem("token", token);
   localStorage.setItem("user", JSON.stringify(user));
 
@@ -25,9 +24,7 @@ export const login = async (email, password) => {
     token,
     expiresIn,
   };
-
 };
-
 
 // ==========================================
 // REGISTRO
@@ -40,7 +37,6 @@ export const register = async (
   phone,
   password
 ) => {
-
   const response = await api.post(
     "/auth/register",
     {
@@ -53,28 +49,52 @@ export const register = async (
   );
 
   return response.data;
-
 };
 
+// ==========================================
+// VERIFICAR CORREO ELECTRÓNICO
+// ==========================================
+
+export const verifyEmail = async (token) => {
+  const response = await api.post(
+    "/auth/verify-email",
+    {
+      token,
+    }
+  );
+
+  return response.data;
+};
+
+// ==========================================
+// REENVIAR CORREO DE VERIFICACIÓN
+// ==========================================
+
+export const resendVerification = async (email) => {
+  const response = await api.post(
+    "/auth/resend-verification",
+    {
+      email,
+    }
+  );
+
+  return response.data;
+};
 
 // ==========================================
 // LOGOUT
 // ==========================================
 
 export const logout = () => {
-
   localStorage.removeItem("token");
   localStorage.removeItem("user");
-
 };
-
 
 // ==========================================
 // OBTENER USUARIO ACTUAL
 // ==========================================
 
 export const getCurrentUser = () => {
-
   const user = localStorage.getItem("user");
 
   if (!user) {
@@ -82,40 +102,25 @@ export const getCurrentUser = () => {
   }
 
   try {
-
     return JSON.parse(user);
-
   } catch (error) {
-
-    console.error(
-      "Error leyendo usuario:",
-      error
-    );
-
+    console.error("Error leyendo usuario:", error);
     return null;
-
   }
-
 };
-
 
 // ==========================================
 // OBTENER TOKEN
 // ==========================================
 
 export const getToken = () => {
-
   return localStorage.getItem("token");
-
 };
-
 
 // ==========================================
 // COMPROBAR SI HAY SESIÓN
 // ==========================================
 
 export const isAuthenticated = () => {
-
   return !!localStorage.getItem("token");
-
 };
