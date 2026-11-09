@@ -321,7 +321,7 @@ function Login() {
                 >
 
                   {showPassword
-                    ? "🙈"
+                    ? "👁️"
                     : "👁️"
                   }
 
@@ -342,10 +342,7 @@ function Login() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    // Se implementará
-                    // posteriormente.
-                  }}
+                  onClick={() => navigate("/forgot-password")}
                   className="
                     text-sm
                     text-[#B8860B]
@@ -353,7 +350,7 @@ function Login() {
                     transition
                   "
                 >
-
+                  
                   ¿Olvidaste tu contraseña?
 
                 </button>

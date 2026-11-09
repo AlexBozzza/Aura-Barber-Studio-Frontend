@@ -8,6 +8,8 @@ import Appointments from "./pages/Appointments";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import VerifyEmail from "./pages/VerifyEmail";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import AdminPanel from "./pages/AdminPanel";
 import Profile from "./pages/Profile";
 import MyAppointments from "./pages/MyAppointments";
@@ -24,6 +26,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { Analytics } from "@vercel/analytics/react";
 
 function App() {
+
   return (
     <>
       <Routes>
@@ -35,6 +38,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         {/* PERFIL DEL USUARIO */}
         <Route
@@ -143,6 +148,8 @@ function App() {
       <Analytics />
     </>
   );
+
 }
+
 
 export default App;
