@@ -755,7 +755,7 @@ function AdminProfile() {
                       : "Mostrar contraseña"
                   }
                 >
-                  {showCurrentPassword ? "🙈" : "👁️"}
+                  {showCurrentPassword ? "👁️" : "👁️"}
                 </button>
 
               </div>
@@ -829,7 +829,7 @@ function AdminProfile() {
                       : "Mostrar contraseña"
                   }
                 >
-                  {showNewPassword ? "🙈" : "👁️"}
+                  {showNewPassword ? "👁️" : "👁️"}
                 </button>
 
               </div>
@@ -903,7 +903,7 @@ function AdminProfile() {
                       : "Mostrar contraseña"
                   }
                 >
-                  {showConfirmPassword ? "🙈" : "👁️"}
+                  {showConfirmPassword ? "👁️" : "👁️"}
                 </button>
 
               </div>
