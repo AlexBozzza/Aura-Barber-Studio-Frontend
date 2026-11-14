@@ -376,9 +376,7 @@ function Profile() {
         last_name:
           formData.last_name,
 
-        email:
-          formData.email,
-
+          
         phone:
           formData.phone,
 
@@ -847,27 +845,26 @@ function Profile() {
                     text-gray-600
                   " />
 
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="
-                      w-full
-                      bg-[#181818]
-                      border
-                      border-gray-700
-                      rounded-xl
-                      pl-11
-                      pr-4
-                      py-3
-                      text-white
-                      outline-none
-                      focus:border-[#B8860B]
-                      transition
-                    "
-                  />
+<input
+  type="email"
+  name="email"
+  value={formData.email}
+  readOnly
+  title="El correo electrónico no se puede modificar"
+  className="
+    w-full
+    bg-[#181818]
+    border
+    border-gray-700
+    rounded-xl
+    pl-11
+    pr-4
+    py-3
+    text-gray-400
+    cursor-not-allowed
+    outline-none
+  "
+/>
 
                 </div>
 

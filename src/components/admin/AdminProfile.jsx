@@ -247,8 +247,7 @@ function AdminProfile() {
       const payload = {
 
         first_name: formData.first_name,
-        last_name: formData.last_name,
-        email: formData.email,
+        last_name: formData.last_name,        
         phone: formData.phone
 
       };
@@ -588,25 +587,25 @@ function AdminProfile() {
                 Correo electrónico
               </label>
 
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="
-                  w-full
-                  bg-[#181818]
-                  border
-                  border-gray-700
-                  rounded-xl
-                  px-4
-                  py-3
-                  text-white
-                  outline-none
-                  focus:border-[#B8860B]
-                "
-              />
+<input
+  type="email"
+  name="email"
+  value={formData.email}
+  readOnly
+  title="El correo electrónico no se puede modificar"
+  className="
+    w-full
+    bg-[#181818]
+    border
+    border-gray-700
+    rounded-xl
+    px-4
+    py-3
+    text-gray-400
+    cursor-not-allowed
+    outline-none
+  "
+/>
 
             </div>
 
