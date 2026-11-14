@@ -130,3 +130,18 @@ export const deleteAppointment = async (
 
   return response.data;
 };
+
+// ==========================================
+// ACTUALIZAR MÉTODO DE PAGO
+// ==========================================
+export const updateAppointmentPaymentMethod = async (
+  appointmentId,
+  payment_method
+) => {
+  const response = await api.patch(
+    `/appointments/${appointmentId}/payment-method`,
+    { payment_method }
+  );
+
+  return response.data.data;
+};

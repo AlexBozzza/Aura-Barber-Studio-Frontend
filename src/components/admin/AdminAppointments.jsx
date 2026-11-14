@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   getAppointments,
   updateAppointmentStatus,
+  updateAppointmentPaymentMethod,
   deleteAppointment,
 } from "../../services/appointmentService";
 
@@ -139,6 +140,42 @@ function AdminAppointments() {
     }
 
   };
+
+  // ==========================================
+// CAMBIAR MÉTODO DE PAGO
+// ==========================================
+
+const handlePaymentMethodChange = async (
+  id,
+  payment_method
+) => {
+
+  try {
+
+    await updateAppointmentPaymentMethod(
+      id,
+      payment_method
+    );
+
+    await loadAppointments();
+
+  } catch (error) {
+
+    console.error(
+      "Error actualizando método de pago:",
+      error
+    );
+
+    alert(
+      error.response?.data?.message ||
+      "No fue posible actualizar el método de pago."
+    );
+
+    await loadAppointments();
+
+  }
+
+};
 
 
   // ==========================================
@@ -1371,6 +1408,17 @@ const getStatusStyle = (status) => {
                     Estado
                   </th>
 
+                  <th className="
+                   px-6
+                   py-4
+                   text-left
+                   text-xs
+                   uppercase
+                    tracking-wider
+                   text-gray-500
+                  ">
+                   Método de pago
+                  </th>
 
                   <th className="
                     px-6
@@ -1677,6 +1725,50 @@ const getStatusStyle = (status) => {
                         </select>
 
                       </td>
+
+                      {/* MÉTODO DE PAGO */}
+
+<td className="px-6 py-5">
+
+  <select
+    value={appointment.payment_method || ""}
+    disabled={appointment.status !== "COMPLETED"}
+    onChange={(e) =>
+      handlePaymentMethodChange(
+        appointment.id,
+        e.target.value
+      )
+    }
+    className={`
+      border
+      rounded-lg
+      px-3
+      py-2
+      text-sm
+      focus:outline-none
+      ${
+        appointment.status === "COMPLETED"
+          ? "bg-[#181818] border-gray-600 text-white cursor-pointer focus:border-[#B8860B]"
+          : "bg-[#202020] border-gray-800 text-gray-500 cursor-not-allowed"
+      }
+    `}
+  >
+    <option value="" className="bg-[#202020]">
+      {appointment.status === "COMPLETED"
+        ? "Seleccionar"
+        : "No disponible"}
+    </option>
+
+    <option value="SINPE" className="bg-[#202020]">
+      SINPE
+    </option>
+
+    <option value="EFECTIVO" className="bg-[#202020]">
+      Efectivo
+    </option>
+  </select>
+
+</td>
 
 
                       {/* ACCIÓN */}
@@ -2011,6 +2103,7 @@ const getStatusStyle = (status) => {
   );
 
 }
+
 
 
 export default AdminAppointments;
