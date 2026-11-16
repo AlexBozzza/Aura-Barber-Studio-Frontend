@@ -145,3 +145,18 @@ export const updateAppointmentPaymentMethod = async (
 
   return response.data.data;
 };
+
+// ==========================================
+// OBTENER REPORTES DE PAGOS
+// ==========================================
+
+export const getPaymentReports = async (start_date, end_date) => {
+  const response = await api.get("/appointments/reports", {
+    params: {
+      start_date,
+      end_date,
+    },
+  });
+
+  return response.data.data;
+};

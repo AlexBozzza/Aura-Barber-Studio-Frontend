@@ -27,6 +27,11 @@ function AdminSidebar() {
       icon: "✂️",
     },
     {
+     name: "Reportes",
+     path: "/admin/reports",
+     icon: "📈",
+    },
+    {
       name: "Perfil",
       path: "/admin/profile",
       icon: "⚙️",

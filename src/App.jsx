@@ -18,6 +18,7 @@ import AdminServices from "./components/admin/AdminServices";
 import AdminAppointments from "./components/admin/AdminAppointments";
 import AdminClients from "./components/admin/AdminClients";
 import AdminProfile from "./components/admin/AdminProfile";
+import AdminReports from "./components/admin/AdminReports";
 
 import AdminSidebar from "./components/admin/AdminSidebar";
 import AdminHeader from "./components/admin/AdminHeader";
@@ -125,6 +126,24 @@ function App() {
           }
         />
 
+        {/* REPORTES ADMINISTRATIVOS */}
+        <Route
+          path="/admin/reports"
+          element={
+            <ProtectedRoute role="BARBER">
+              <div className="min-h-screen w-full min-w-0 overflow-x-hidden bg-[#111111] text-white">
+                <AdminSidebar />
+                <div className="ml-0 min-w-0 w-full lg:ml-64 lg:w-auto">
+                  <AdminHeader />
+                  <main className="min-w-0 w-full p-4 sm:p-6 lg:p-8">
+                    <AdminReports />
+                  </main>
+                </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+
         {/* PERFIL ADMINISTRATIVO */}
         <Route
           path="/admin/profile"
@@ -150,6 +169,5 @@ function App() {
   );
 
 }
-
 
 export default App;

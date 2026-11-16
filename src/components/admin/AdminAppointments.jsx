@@ -1759,13 +1759,17 @@ const getStatusStyle = (status) => {
         : "No disponible"}
     </option>
 
-    <option value="SINPE" className="bg-[#202020]">
-      SINPE
-    </option>
+<option value="SINPE" className="bg-[#202020]">
+  SINPE
+</option>
 
-    <option value="EFECTIVO" className="bg-[#202020]">
-      Efectivo
-    </option>
+<option value="EFECTIVO" className="bg-[#202020]">
+  Efectivo
+</option>
+
+<option value="TARJETA" className="bg-[#202020]">
+  Tarjeta
+</option>
   </select>
 
 </td>
