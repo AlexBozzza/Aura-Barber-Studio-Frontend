@@ -29,7 +29,7 @@ function AdminClients() {
         usersResponse,
         appointmentsResponse
       ] = await Promise.all([
-        api.get("/users"),
+        api.get("/users?limit=500"),
         api.get("/appointments")
       ]);
 
